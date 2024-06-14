@@ -1,4 +1,4 @@
-package com.lendsqrfpnews
+package com.lendsqrfpnews.newsapp
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
