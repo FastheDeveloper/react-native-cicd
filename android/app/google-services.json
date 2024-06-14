@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "192139754922",
+    "project_id": "lendsqr-fp-news-645ed",
+    "storage_bucket": "lendsqr-fp-news-645ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192139754922:android:04bfe4127e52142d98ffd3",
+        "android_client_info": {
+          "package_name": "com.lendsqrfpnews"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBKSbBAUEkeXl41ABLagc4VCvYcw7kvG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
