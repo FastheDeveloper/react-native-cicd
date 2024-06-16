@@ -16,6 +16,7 @@ end
 
 target 'lendsqrfpnews' do
   config = use_native_modules!
+  use_frameworks! :linkage => :static
 
   use_react_native!(
     :path => config[:reactNativePath],
