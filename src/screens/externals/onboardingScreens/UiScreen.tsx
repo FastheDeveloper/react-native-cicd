@@ -40,7 +40,6 @@ export const Onboarding = () => {
   const onContinue = () => {
     const isLastScreen = step === onboardingSteps.length - 1;
     if (isLastScreen) {
-      console.log('Is lase screen');
       endOnboarding();
     } else {
       setStep(step + 1);
@@ -79,7 +78,6 @@ export const Onboarding = () => {
         </View>
 
         <View style={style.Headers}>
-          {/* <Text style={style.HeaderText}>Manage your tasks</Text> */}
           <Animated.Text
             entering={SlideInLeft}
             style={style.HeaderText}
@@ -87,7 +85,6 @@ export const Onboarding = () => {
             {data.title}
           </Animated.Text>
           <View style={{marginHorizontal: '10%', marginTop: '5%'}}>
-            {/* <Text style={style.subHeader}>You can easily manage all of your daily tasks in DoMe for free</Text> */}
             <Animated.Text
               entering={FadeInLeft.delay(300)}
               style={style.subHeader}>
