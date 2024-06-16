@@ -62,7 +62,7 @@ export const MainNavigator = () => {
       //     ),
       //   },
       {
-        cond: !false,
+        cond: !onboardedUser,
         node: (
           <Fragment>
             <Stack.Screen name={CoreRoutes.ONBOARD} component={Onboarding} />
