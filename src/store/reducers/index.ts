@@ -1,8 +1,9 @@
 import {combineReducers} from '@reduxjs/toolkit';
-
+import userReducer from './userSlice/userSlice';
+import newsReducer from './newSlice/newsSlice';
 const rootReducer = combineReducers({
-  //   app: appReducer,
-  //   theme: themeReducer,
+  user: userReducer,
+  news: newsReducer,
   //   user: userReducer,
   //   passcode: passcodeReducer
   // Add other reducers here

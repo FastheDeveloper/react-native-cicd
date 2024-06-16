@@ -15,6 +15,9 @@ import {
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import ReduxProvider from '@core/services/reduxProvider';
+import {NavigationContainer} from '@react-navigation/native';
+import MainNavigator from '@navigation/CoreNavigator';
+
 GoogleSignin.configure({
   webClientId:
     '973032847065-jtu768pmput08udd3d0o0cb5t3k912b3.apps.googleusercontent.com',
@@ -63,20 +66,23 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView
-      style={{flex: 1, backgroundColor: 'purple', alignItems: 'center'}}>
+    <SafeAreaView style={{flex: 1}}>
       <ReduxProvider>
-        <GoogleSigninButton
-          onPress={() =>
-            onGoogleButtonPress().then(() =>
-              console.log('Signed in with Google!'),
-            )
-          }
-        />
+        <NavigationContainer>
+          {/* <GoogleSigninButton
+            onPress={() =>
+              onGoogleButtonPress().then(() =>
+                console.log('Signed in with Google!'),
+              )
+            }
+          />
 
-        <TouchableOpacity onPress={() => signOut()}>
-          <Text>Signout</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => signOut()}>
+            <Text>Signout</Text>
+          </TouchableOpacity> */}
+
+          <MainNavigator />
+        </NavigationContainer>
       </ReduxProvider>
     </SafeAreaView>
   );
