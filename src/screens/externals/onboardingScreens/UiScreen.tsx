@@ -64,7 +64,7 @@ export const Onboarding = () => {
     <View style={style.container}>
       <Text style={style.skipText}></Text>
       <View style={{alignItems: 'center', marginTop: '5%'}}>
-        <Image source={data.icon} />
+        <Image source={require('../../../lib/assets/zoomed.png')} />
 
         <View style={style.stepContainer}>
           {onboardingSteps.map((dat, index) => (

@@ -42,19 +42,19 @@ function App(): React.JSX.Element {
   const [user, setUser] = useState<any | null>();
 
   // Handle user state changes
-  function onAuthStateChanged(user: any) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
+  // function onAuthStateChanged(user: any) {
+  //   setUser(user);
+  //   if (initializing) setInitializing(false);
+  // }
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+  // useEffect(() => {
+  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  //   return subscriber; // unsubscribe on unmount
+  // }, []);
 
-  if (initializing) return <ActivityIndicator />;
+  // if (initializing) return <ActivityIndicator />;
 
-  console.log(user);
+  // console.log(user);
 
   const signOut = async () => {
     try {
