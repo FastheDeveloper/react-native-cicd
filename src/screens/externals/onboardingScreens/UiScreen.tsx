@@ -3,7 +3,7 @@ import React from 'react';
 
 export const Onboarding = () => {
   return (
-    <View>
+    <View style={{backgroundColor: 'red', flex: 1}}>
       <Text>Onboarding</Text>
     </View>
   );
