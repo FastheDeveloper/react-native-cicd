@@ -26,6 +26,7 @@
     "appcenter-cli": "^3.0.0",
     "appcenter-crashes": "5.0.1",
     "axios": "^1.7.2",
+    "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-native": "0.74.2",
     "react-native-code-push": "^8.2.2",
@@ -35,7 +36,8 @@
     "react-native-rename": "^3.2.14",
     "react-native-webview": "^13.10.3",
     "react-redux": "^9.1.2",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
