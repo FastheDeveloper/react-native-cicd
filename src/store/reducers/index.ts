@@ -4,9 +4,6 @@ import newsReducer from './newSlice/newsSlice';
 const rootReducer = combineReducers({
   user: userReducer,
   news: newsReducer,
-  //   user: userReducer,
-  //   passcode: passcodeReducer
-  // Add other reducers here
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

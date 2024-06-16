@@ -50,17 +50,6 @@ export const MainNavigator = () => {
 
   const renderApp = () => {
     const list = [
-      /* The code block you mentioned is a part of the `renderApp` function in the `MainNavigator`
-      component. It is responsible for conditionally rendering different screens based on certain
-      conditions. */
-      //   { handle with splashscreen
-      //     cond: !isThemeLoaded,
-      //     node: (
-      //       <Fragment>
-      //         <Stack.Screen name={CoreRoutes.LOADING} component={Loader} />
-      //       </Fragment>
-      //     ),
-      //   },
       {
         cond: !onboardedUser,
         node: (

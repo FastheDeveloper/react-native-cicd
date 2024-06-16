@@ -3,7 +3,7 @@ import React from 'react';
 
 export const SignUp = () => {
   return (
-    <View style={{backgroundColor: 'blue', flex: 1}}>
+    <View style={styles.container}>
       <Text>SignUp</Text>
     </View>
   );
@@ -11,4 +11,11 @@ export const SignUp = () => {
 
 export default SignUp;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingVertical: '5%',
+    paddingHorizontal: '5%',
+  },
+});
