@@ -8,7 +8,10 @@ interface Props {
 export const Primary = ({disabled, title, onPress}: Props) => {
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[
+        styles.container,
+        {backgroundColor: disabled ? '#0F6DDC80' : '#0F6DDC'},
+      ]}
       disabled={disabled}
       onPress={onPress}>
       <Text style={{color: '#fff'}}>{title}</Text>

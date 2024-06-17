@@ -1,9 +1,18 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useRef, useState} from 'react';
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Input from '@lib/compnents/TextInput';
 import PhoneInput from 'react-native-phone-number-input';
 import {Primary, Tetiary} from '@lib/compnents/Button';
+import {navigate} from '@utils/navigationUtils';
+import {CoreRoutes} from '@navigation/routes';
 
 const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -12,6 +21,8 @@ const validateEmail = (email: string) => {
 
 export const SignUp = () => {
   const [valid, setValid] = useState(true);
+  const [validHas, setValidHas] = useState(true);
+
   const [userData, setUserData] = useState({
     firstname: '',
     lastName: '',
@@ -19,74 +30,100 @@ export const SignUp = () => {
     phoneNumber: '',
   });
   const [emailError, setEmailError] = useState(true);
+  const [emailhasError, setEmailHasError] = useState(true);
 
   const phoneInput = useRef<PhoneInput>(null);
+  const disabled =
+    !emailError ||
+    !valid ||
+    !userData.firstname ||
+    !userData.lastName ||
+    !userData.email ||
+    !userData.phoneNumber ||
+    !emailhasError ||
+    !validHas;
 
+  useEffect(() => {
+    setEmailHasError(validateEmail(userData.email));
+  }, [userData.email]);
+
+  useEffect(() => {
+    const checkValid = phoneInput.current?.isValidNumber(userData.phoneNumber);
+    setValidHas(checkValid ? checkValid : false);
+  }, [userData.phoneNumber]);
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Icon name="newspaper" size={30} color={'#0F6DDC'} />
-        <Text style={styles.headerText}>NewStory</Text>
-      </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Icon name="newspaper" size={30} color={'#0F6DDC'} />
+          <Text style={styles.headerText}>NewStory</Text>
+        </View>
 
-      <View style={styles.header}>
-        <Text style={styles.titleText}>Sign Up</Text>
-      </View>
+        <View style={styles.header}>
+          <Text style={styles.titleText}>Sign Up</Text>
+        </View>
 
-      <View style={styles.inputView}>
-        <Input
-          placeholder={'First Name'}
-          value={userData.firstname}
-          onTextChange={text => setUserData({...userData, firstname: text})}
-        />
-        <Input
-          placeholder={'Last Name'}
-          value={userData.lastName}
-          onTextChange={text => setUserData({...userData, lastName: text})}
-        />
-        {!valid && (
-          <Text style={styles.errorMessage}>Invalid Phone number</Text>
-        )}
-        <PhoneInput
-          ref={phoneInput}
-          defaultValue={userData.phoneNumber}
-          defaultCode="DM"
-          layout="first"
-          onChangeText={text => {
-            setUserData({...userData, phoneNumber: text});
-          }}
-          containerStyle={styles.phoneInput}
-          textContainerStyle={styles.textContainer}
-          textInputStyle={styles.textInput}
-          codeTextStyle={styles.codeStyle}
-          textInputProps={{
-            onBlur: () => {
-              const checkValid = phoneInput.current?.isValidNumber(
-                userData.phoneNumber,
-              );
-              setValid(checkValid ? checkValid : false);
-            },
-          }}
-        />
-        {!emailError && (
-          <Text style={styles.errorMessage}>Invalid Email Address</Text>
-        )}
-        <Input
-          placeholder={'Email'}
-          value={userData.email}
-          onTextChange={text => setUserData({...userData, email: text})}
-          onBlur={() => setEmailError(validateEmail(userData.email))}
-        />
-      </View>
+        <View style={styles.inputView}>
+          <Input
+            placeholder={'First Name'}
+            value={userData.firstname}
+            onTextChange={text => setUserData({...userData, firstname: text})}
+          />
+          <Input
+            placeholder={'Last Name'}
+            value={userData.lastName}
+            onTextChange={text => setUserData({...userData, lastName: text})}
+          />
+          {!valid && (
+            <Text style={styles.errorMessage}>Invalid Phone number</Text>
+          )}
+          <PhoneInput
+            ref={phoneInput}
+            defaultValue={userData.phoneNumber}
+            defaultCode="DM"
+            layout="first"
+            onChangeText={text => {
+              setUserData({...userData, phoneNumber: text});
+            }}
+            containerStyle={styles.phoneInput}
+            textContainerStyle={styles.textContainer}
+            textInputStyle={styles.textInput}
+            codeTextStyle={styles.codeStyle}
+            textInputProps={{
+              onBlur: () => {
+                const checkValid = phoneInput.current?.isValidNumber(
+                  userData.phoneNumber,
+                );
+                setValid(checkValid ? checkValid : false);
+              },
+            }}
+          />
+          {!emailError && (
+            <Text style={styles.errorMessage}>Invalid Email Address</Text>
+          )}
+          <Input
+            placeholder={'Email'}
+            value={userData.email}
+            onTextChange={text => setUserData({...userData, email: text})}
+            onBlur={() => setEmailError(validateEmail(userData.email))}
+          />
+        </View>
 
-      <View style={styles.buttonGroup}>
-        <Primary title="Sign Up" onPress={() => console.log('Press')} />
-        <Tetiary
-          title="I already have an account"
-          onPress={() => console.log('Press')}
-        />
+        <View style={styles.buttonGroup}>
+          <Primary
+            title="Sign Up"
+            onPress={() => {
+              if (!disabled) navigate(CoreRoutes.GOOGLE);
+            }}
+            disabled={disabled}
+          />
+          <Tetiary
+            title="I already have an account"
+            onPress={() => navigate(CoreRoutes.LOGIN)}
+          />
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

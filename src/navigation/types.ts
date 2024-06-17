@@ -5,6 +5,7 @@ export type CoreRoutesParams = {
   [CoreRoutes.HOME]: undefined;
   [CoreRoutes.ONBOARD]: undefined;
   [CoreRoutes.LOGIN]: undefined;
+  [CoreRoutes.GOOGLE]: undefined;
 };
 
 export type MainRoutesParams = {

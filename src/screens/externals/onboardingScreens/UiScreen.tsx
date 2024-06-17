@@ -57,7 +57,7 @@ export const Onboarding = () => {
 
   const endOnboarding = async () => {
     await persistStorage.set(STORAGE_KEYS.ONBOARDED_USER, true);
-    navigation.navigate(CoreRoutes.SIGNUP);
+    navigate(CoreRoutes.SIGNUP);
   };
   return (
     <View style={style.container}>

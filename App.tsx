@@ -17,6 +17,7 @@ import auth from '@react-native-firebase/auth';
 import ReduxProvider from '@core/services/reduxProvider';
 import {NavigationContainer} from '@react-navigation/native';
 import MainNavigator from '@navigation/CoreNavigator';
+import {navigationRef} from '@utils/navigationUtils';
 
 GoogleSignin.configure({
   webClientId:
@@ -68,7 +69,7 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaView style={{flex: 1}}>
       <ReduxProvider>
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
           {/* <GoogleSigninButton
             onPress={() =>
               onGoogleButtonPress().then(() =>

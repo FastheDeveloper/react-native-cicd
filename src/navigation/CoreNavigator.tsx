@@ -13,6 +13,7 @@ import {saveNews} from '@store/reducers/newSlice/newsDispatchAction';
 import {Onboarding} from '@screens/externals/onboardingScreens';
 import {Login} from '@screens/externals/loginScreen';
 import {SignUp} from '@screens/externals/signupScreen';
+import GoogleScreen from '@screens/externals/signupScreen/GoogleScreen';
 
 const Stack = createNativeStackNavigator<CoreRoutesParams>();
 
@@ -56,6 +57,7 @@ export const MainNavigator = () => {
           <Fragment>
             <Stack.Screen name={CoreRoutes.ONBOARD} component={Onboarding} />
             <Stack.Screen name={CoreRoutes.SIGNUP} component={SignUp} />
+            <Stack.Screen name={CoreRoutes.GOOGLE} component={GoogleScreen} />
             <Stack.Screen name={CoreRoutes.LOGIN} component={Login} />
           </Fragment>
         ),
@@ -66,6 +68,7 @@ export const MainNavigator = () => {
           <Fragment>
             <Stack.Screen name={CoreRoutes.SIGNUP} component={SignUp} />
             <Stack.Screen name={CoreRoutes.LOGIN} component={Login} />
+            <Stack.Screen name={CoreRoutes.GOOGLE} component={GoogleScreen} />
           </Fragment>
         ),
       },
