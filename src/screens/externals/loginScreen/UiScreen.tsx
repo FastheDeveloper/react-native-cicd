@@ -29,20 +29,10 @@ export const Login = () => {
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
     const {idToken} = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-    const currentUser = auth().currentUser;
-    console.log('The currnt user is, ', currentUser);
-
     const signInResult = await auth().signInWithCredential(googleCredential);
-    console.log('SignIn Result: ', signInResult);
     const signedinUser = signInResult.user;
-
-    console.log('SignIn User: ', signedinUser);
-
     if (signedinUser) {
       const {displayName, email, photoURL, uid} = signedinUser;
-      console.log('displayName: ', displayName);
-
       setUser({displayName, email, photoURL, uid});
     }
     if (idToken) {
@@ -63,9 +53,6 @@ export const Login = () => {
   const updateUser = async () => {
     updateUserData(user as UserType);
     await persistStorage.setItem(STORAGE_KEYS.SAVED_USER, user as UserType);
-    // .then(() => {
-    //   setUser(null);
-    // });
   };
 
   useEffect(() => {
@@ -102,12 +89,7 @@ export const Login = () => {
             <Primary
               title="Continue with Google"
               onPress={() => {
-                onGoogleButtonPress().then(async () => {
-                  // const currentUser = auth().currentUser;
-                  // console.log(currentUser, ' in the then');
-                  // const {displayName, email, photoURL, uid} = currentUser;
-                  // setUser({displayName, email, photoURL, uid});
-                });
+                onGoogleButtonPress();
               }}
             />
           </View>
