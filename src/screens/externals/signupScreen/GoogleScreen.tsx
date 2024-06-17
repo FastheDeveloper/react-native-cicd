@@ -8,11 +8,13 @@ import {
 } from 'react-native';
 import React, {Fragment, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {GoogleButton, Primary, Tetiary} from '@lib/compnents/Button';
-import {navigate} from '@utils/navigationUtils';
-import {CoreRoutes} from '@navigation/routes';
+import {Primary} from '@lib/compnents/Button';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
+import {BigGoogle} from '@lib/icons/googleIcon/GoogleSvg';
+import {updateUserData} from '@store/reducers/userSlice';
+import {STORAGE_KEYS, persistStorage} from '@core/services/storage';
+import {UserType} from '@lib/types/apiTypes';
 
 GoogleSignin.configure({
   webClientId:
@@ -34,18 +36,31 @@ async function onGoogleButtonPress() {
 
 export const GoogleScreen = () => {
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<any | null>();
+  const [user, setUser] = useState<UserType | null>();
 
-  //   Handle user state changes
   function onAuthStateChanged(user: any) {
-    setUser(user);
+    if (user) {
+      const {displayName, email, photoURL, uid} = user;
+      setUser({displayName, email, photoURL, uid});
+    } else {
+      setUser(null);
+    }
     if (initializing) setInitializing(false);
   }
-
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
+
+  const updateUser = async () => {
+    console.log('runnisg update user');
+    updateUserData(user as UserType);
+    await persistStorage.setItem(STORAGE_KEYS.SAVED_USER, user as UserType);
+  };
+
+  useEffect(() => {
+    updateUser();
+  }, [user]);
 
   if (initializing) return <ActivityIndicator />;
 
@@ -69,18 +84,24 @@ export const GoogleScreen = () => {
             <Text style={styles.headerText}>NewStory</Text>
           </View>
 
-          <View style={styles.header}>
-            <Text style={styles.titleText}></Text>
-          </View>
-
           <View style={styles.buttonGroup}>
-            <GoogleButton
+            <View style={{alignItems: 'center'}}>
+              <BigGoogle />
+              <View style={{alignItems: 'center', marginVertical: '7%'}}>
+                <Text style={{color: '#0F6DDC'}}>
+                  To complete your registration
+                </Text>
+                <Text style={{color: '#0F6DDC'}}>
+                  and gain full access to all features,
+                </Text>
+                <Text style={{color: '#0F6DDC'}}>click the button below.</Text>
+              </View>
+            </View>
+            <Primary
               title="Continue with Google"
-              onPress={() =>
-                onGoogleButtonPress().then(() =>
-                  console.log('Signed in with Google!'),
-                )
-              }
+              onPress={() => {
+                onGoogleButtonPress().then(async () => {});
+              }}
               //   disabled={disabled}
             />
           </View>
@@ -119,9 +140,9 @@ const styles = StyleSheet.create({
 
   buttonGroup: {
     marginHorizontal: '5%',
-    marginVertical: '15%',
+    // marginVertical: '15%',
     flex: 1,
-    // backgroundColor: 'red',
     justifyContent: 'center',
+    // backgroundColor: 'red',
   },
 });

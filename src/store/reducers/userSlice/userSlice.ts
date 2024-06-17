@@ -14,13 +14,14 @@ const initialState: AppState = {
 };
 
 const userSlice = createSlice({
-  name: 'app',
+  name: 'user',
   initialState,
   reducers: {
     setUserId: (state: AppState, action: PayloadAction<string>) => {
       state.id = action.payload;
     },
     setUserData: (state: AppState, action: PayloadAction<UserType>) => {
+      console.log(action.payload, '\n\n payload');
       state.userData = action.payload;
     },
     resetUserData: (state: AppState) => {

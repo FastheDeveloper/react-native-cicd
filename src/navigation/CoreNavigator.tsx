@@ -14,6 +14,7 @@ import {Onboarding} from '@screens/externals/onboardingScreens';
 import {Login} from '@screens/externals/loginScreen';
 import {SignUp} from '@screens/externals/signupScreen';
 import GoogleScreen from '@screens/externals/signupScreen/GoogleScreen';
+import {updateUserData} from '@store/reducers/userSlice';
 
 const Stack = createNativeStackNavigator<CoreRoutesParams>();
 
@@ -35,20 +36,24 @@ export const MainNavigator = () => {
     const onboardedUser = await persistStorage.getBoolean(
       STORAGE_KEYS.ONBOARDED_USER,
     );
+    const savedUser = await persistStorage.getItem(STORAGE_KEYS.SAVED_USER);
     const savedNews = await persistStorage.getItem(STORAGE_KEYS.SAVED_NEWS);
 
     if (savedNews) {
       saveNews(savedNews);
-
       console.log(typeof saveNews, 'TASK SAVED IS ');
+    }
+    if (savedUser) {
+      updateUserData(savedUser);
     }
     if (onboardedUser) setOnBoardedUser(true);
   };
 
   useEffect(() => {
     getOnboarder();
+    //run above then hide spashscreen here
   }, []);
-
+  console.log(userData?.uid, ' Usr data in core');
   const renderApp = () => {
     const list = [
       {
@@ -63,7 +68,7 @@ export const MainNavigator = () => {
         ),
       },
       {
-        cond: !userData?.refreshToken,
+        cond: !userData,
         node: (
           <Fragment>
             <Stack.Screen name={CoreRoutes.SIGNUP} component={SignUp} />

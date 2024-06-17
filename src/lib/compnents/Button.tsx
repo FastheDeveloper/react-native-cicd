@@ -1,6 +1,6 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import GoogleIcon from '@lib/icons/googleIcon/GoogleSvg';
+import {GoogleIcon} from '@lib/icons/googleIcon/GoogleSvg';
 interface Props {
   disabled?: boolean;
   title: string;
@@ -28,12 +28,12 @@ export const GoogleButton = ({disabled, title, onPress}: Props) => {
       onPress={onPress}>
       <View
         style={{
-          flexDirection: 'column',
+          flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
         <GoogleIcon />
-        <Text style={{color: '#0F6DDC', marginTop: '5%'}}>{title}</Text>
+        <Text style={{color: '#0F6DDC', marginLeft: '3%'}}>{title}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -60,12 +60,10 @@ const styles = StyleSheet.create({
   containerG: {
     backgroundColor: '#fff',
     alignItems: 'center',
-    paddingVertical: '8%',
-    paddingHorizontal: '10%',
+    paddingVertical: '4%',
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#0F6DDC',
-    alignSelf: 'center',
   },
   containerT: {
     alignItems: 'flex-end',

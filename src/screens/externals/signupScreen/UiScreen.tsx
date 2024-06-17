@@ -101,7 +101,7 @@ export const SignUp = () => {
             <PhoneInput
               ref={phoneInput}
               defaultValue={userData.phoneNumber}
-              defaultCode="DM"
+              defaultCode="NG"
               layout="first"
               onChangeText={text => {
                 setUserData({...userData, phoneNumber: text});

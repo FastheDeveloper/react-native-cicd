@@ -1,10 +1,11 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {persistStorage} from '@core/services/storage';
 
 export const HomeScreen = () => {
   return (
-    <View>
-      <Text>HomeScreen</Text>
+    <View style={{backgroundColor: 'white', flex: 1}}>
+      <Text onPress={() => persistStorage.clearAll()}>HomeScreen</Text>
     </View>
   );
 };

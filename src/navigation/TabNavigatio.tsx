@@ -53,20 +53,12 @@ const MainNavigatorUI = () => {
               tabBarIcon: ({focused}) => {
                 const isContact = showOptions && !focused;
                 return (
-                  <Icon
-                    color={
-                      focused && !showOptions
-                        ? 'red'
-                        : isContact
-                        ? 'red'
-                        : 'red'
-                    }
-                  />
+                  <Icon color={focused && !showOptions ? '#0F6DDC' : 'grey'} />
                 );
               },
               tabBarStyle: {
                 ...isTabStyleVisible(params),
-                backgroundColor: 'transparent',
+                backgroundColor: 'white',
                 paddingVertical: 20,
                 borderTopWidth: 0,
                 paddingBottom: 20,

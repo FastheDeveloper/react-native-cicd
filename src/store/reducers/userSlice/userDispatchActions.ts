@@ -7,6 +7,7 @@ export const updateUserId = (val: string) => {
 };
 
 export const updateUserData = (val: UserType) => {
+  console.log('USER UPDATING IS \n\n\n', val);
   store.dispatch(setUserData(val));
 };
 
