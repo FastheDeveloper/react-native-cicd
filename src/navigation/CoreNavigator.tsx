@@ -14,7 +14,11 @@ import {Onboarding} from '@screens/externals/onboardingScreens';
 import {Login} from '@screens/externals/loginScreen';
 import {SignUp} from '@screens/externals/signupScreen';
 import GoogleScreen from '@screens/externals/signupScreen/GoogleScreen';
-import {updateUserData, updateUserId} from '@store/reducers/userSlice';
+import {
+  updateUserData,
+  updateUserId,
+  updateUserOnboarded,
+} from '@store/reducers/userSlice';
 
 const Stack = createNativeStackNavigator<CoreRoutesParams>();
 
@@ -29,7 +33,9 @@ const options = {
  * Renders nested navigators like Drawer and Tab.
  */
 export const MainNavigator = () => {
-  const {userData, id} = useSelector((state: RootState) => state.user);
+  const {userData, id, userOnboarded} = useSelector(
+    (state: RootState) => state.user,
+  );
   const [onboardedUser, setOnBoardedUser] = useState(false);
 
   const getOnboarder = async () => {
@@ -50,7 +56,10 @@ export const MainNavigator = () => {
     if (savedId) {
       updateUserId(savedId);
     }
-    if (onboardedUser) setOnBoardedUser(true);
+    if (onboardedUser) {
+      updateUserOnboarded(true);
+      setOnBoardedUser(true);
+    }
   };
 
   useEffect(() => {
@@ -61,13 +70,10 @@ export const MainNavigator = () => {
   const renderApp = () => {
     const list = [
       {
-        cond: !onboardedUser,
+        cond: !userOnboarded,
         node: (
           <Fragment>
             <Stack.Screen name={CoreRoutes.ONBOARD} component={Onboarding} />
-            <Stack.Screen name={CoreRoutes.SIGNUP} component={SignUp} />
-            <Stack.Screen name={CoreRoutes.GOOGLE} component={GoogleScreen} />
-            <Stack.Screen name={CoreRoutes.LOGIN} component={Login} />
           </Fragment>
         ),
       },

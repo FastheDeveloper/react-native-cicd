@@ -27,26 +27,31 @@ export const GoogleScreen = () => {
 
   async function onGoogleButtonPress() {
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-
     const {idToken} = await GoogleSignin.signIn();
-
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     const currentUser = auth().currentUser;
+    console.log('The currnt user is, ', currentUser);
 
-    if (currentUser) {
-      const {displayName, email, photoURL, uid} = currentUser;
+    const signInResult = await auth().signInWithCredential(googleCredential);
+    console.log('SignIn Result: ', signInResult);
+    const signedinUser = signInResult.user;
+
+    console.log('SignIn User: ', signedinUser);
+
+    if (signedinUser) {
+      const {displayName, email, photoURL, uid} = signedinUser;
+      console.log('displayName: ', displayName);
+
       setUser({displayName, email, photoURL, uid});
-    } else {
-      setUser(null);
     }
     if (idToken) {
       updateUserId(idToken);
       await persistStorage.set(STORAGE_KEYS.SAVED_USER_ID, idToken);
     }
-
     return auth().signInWithCredential(googleCredential);
   }
+
   function onAuthStateChanged(user: any) {
     if (initializing) setInitializing(false);
   }
@@ -57,11 +62,10 @@ export const GoogleScreen = () => {
 
   const updateUser = async () => {
     updateUserData(user as UserType);
-    await persistStorage
-      .setItem(STORAGE_KEYS.SAVED_USER, user as UserType)
-      .then(() => {
-        setUser(null);
-      });
+    await persistStorage.setItem(STORAGE_KEYS.SAVED_USER, user as UserType);
+    // .then(() => {
+    //   setUser(null);
+    // });
   };
 
   useEffect(() => {
@@ -97,7 +101,12 @@ export const GoogleScreen = () => {
             <Primary
               title="Continue with Google"
               onPress={() => {
-                onGoogleButtonPress().then(async () => {});
+                onGoogleButtonPress().then(async () => {
+                  // const currentUser = auth().currentUser;
+                  // console.log(currentUser, ' in the then');
+                  // const {displayName, email, photoURL, uid} = currentUser;
+                  // setUser({displayName, email, photoURL, uid});
+                });
               }}
             />
           </View>

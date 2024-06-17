@@ -9,6 +9,7 @@ import Animated, {
   SlideInLeft,
   SlideOutRight,
 } from 'react-native-reanimated';
+import {updateUserOnboarded} from '@store/reducers/userSlice';
 
 export const Onboarding = () => {
   const onboardingSteps = [
@@ -42,6 +43,7 @@ export const Onboarding = () => {
   };
 
   const endOnboarding = async () => {
+    updateUserOnboarded(true);
     await persistStorage.set(STORAGE_KEYS.ONBOARDED_USER, true);
     navigate(CoreRoutes.SIGNUP);
   };

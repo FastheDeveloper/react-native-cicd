@@ -8,15 +8,13 @@ import {
 } from 'react-native';
 import React, {Fragment, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {Primary, Tetiary} from '@lib/compnents/Button';
+import {Primary} from '@lib/compnents/Button';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import {BigGoogle} from '@lib/icons/googleIcon/GoogleSvg';
 import {updateUserData, updateUserId} from '@store/reducers/userSlice';
 import {STORAGE_KEYS, persistStorage} from '@core/services/storage';
 import {UserType} from '@lib/types/apiTypes';
-import {CoreRoutes} from '@navigation/routes';
-import {navigate} from '@utils/navigationUtils';
 
 GoogleSignin.configure({
   webClientId:
@@ -29,26 +27,31 @@ export const Login = () => {
 
   async function onGoogleButtonPress() {
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-
     const {idToken} = await GoogleSignin.signIn();
-
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     const currentUser = auth().currentUser;
+    console.log('The currnt user is, ', currentUser);
 
-    if (currentUser) {
-      const {displayName, email, photoURL, uid} = currentUser;
+    const signInResult = await auth().signInWithCredential(googleCredential);
+    console.log('SignIn Result: ', signInResult);
+    const signedinUser = signInResult.user;
+
+    console.log('SignIn User: ', signedinUser);
+
+    if (signedinUser) {
+      const {displayName, email, photoURL, uid} = signedinUser;
+      console.log('displayName: ', displayName);
+
       setUser({displayName, email, photoURL, uid});
-    } else {
-      setUser(null);
     }
     if (idToken) {
       updateUserId(idToken);
       await persistStorage.set(STORAGE_KEYS.SAVED_USER_ID, idToken);
     }
-
     return auth().signInWithCredential(googleCredential);
   }
+
   function onAuthStateChanged(user: any) {
     if (initializing) setInitializing(false);
   }
@@ -59,11 +62,10 @@ export const Login = () => {
 
   const updateUser = async () => {
     updateUserData(user as UserType);
-    await persistStorage
-      .setItem(STORAGE_KEYS.SAVED_USER, user as UserType)
-      .then(() => {
-        setUser(null);
-      });
+    await persistStorage.setItem(STORAGE_KEYS.SAVED_USER, user as UserType);
+    // .then(() => {
+    //   setUser(null);
+    // });
   };
 
   useEffect(() => {
@@ -96,15 +98,17 @@ export const Login = () => {
                 </Text>
               </View>
             </View>
+
             <Primary
               title="Continue with Google"
               onPress={() => {
-                onGoogleButtonPress().then(async () => {});
+                onGoogleButtonPress().then(async () => {
+                  // const currentUser = auth().currentUser;
+                  // console.log(currentUser, ' in the then');
+                  // const {displayName, email, photoURL, uid} = currentUser;
+                  // setUser({displayName, email, photoURL, uid});
+                });
               }}
-            />
-            <Tetiary
-              title="Don't have an account?"
-              onPress={() => navigate(CoreRoutes.SIGNUP)}
             />
           </View>
         </View>
