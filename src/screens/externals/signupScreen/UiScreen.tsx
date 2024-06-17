@@ -2,17 +2,17 @@ import {
   Keyboard,
   StyleSheet,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Input from '@lib/compnents/TextInput';
 import PhoneInput from 'react-native-phone-number-input';
 import {Primary, Tetiary} from '@lib/compnents/Button';
 import {navigate} from '@utils/navigationUtils';
 import {CoreRoutes} from '@navigation/routes';
+import LottieView from 'lottie-react-native';
 
 const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -31,7 +31,7 @@ export const SignUp = () => {
   });
   const [emailError, setEmailError] = useState(true);
   const [emailhasError, setEmailHasError] = useState(true);
-
+  const [loading, setLoading] = useState(false);
   const phoneInput = useRef<PhoneInput>(null);
   const disabled =
     !emailError ||
@@ -43,6 +43,14 @@ export const SignUp = () => {
     !emailhasError ||
     !validHas;
 
+  const buttonPressed = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      navigate(CoreRoutes.GOOGLE);
+    }, 3000);
+  };
+
   useEffect(() => {
     setEmailHasError(validateEmail(userData.email));
   }, [userData.email]);
@@ -51,78 +59,90 @@ export const SignUp = () => {
     const checkValid = phoneInput.current?.isValidNumber(userData.phoneNumber);
     setValidHas(checkValid ? checkValid : false);
   }, [userData.phoneNumber]);
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Icon name="newspaper" size={30} color={'#0F6DDC'} />
-          <Text style={styles.headerText}>NewStory</Text>
-        </View>
+      <Fragment>
+        {loading && (
+          <View style={styles.loadingOverlay}>
+            <LottieView
+              style={styles.loadingAnimation}
+              source={require('../../../lib/assets/loading.json')}
+              autoPlay
+              loop
+              speed={4}
+            />
+          </View>
+        )}
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Icon name="newspaper" size={30} color={'#0F6DDC'} />
+            <Text style={styles.headerText}>NewStory</Text>
+          </View>
 
-        <View style={styles.header}>
-          <Text style={styles.titleText}>Sign Up</Text>
-        </View>
+          <View style={styles.header}>
+            <Text style={styles.titleText}>Sign Up</Text>
+          </View>
 
-        <View style={styles.inputView}>
-          <Input
-            placeholder={'First Name'}
-            value={userData.firstname}
-            onTextChange={text => setUserData({...userData, firstname: text})}
-          />
-          <Input
-            placeholder={'Last Name'}
-            value={userData.lastName}
-            onTextChange={text => setUserData({...userData, lastName: text})}
-          />
-          {!valid && (
-            <Text style={styles.errorMessage}>Invalid Phone number</Text>
-          )}
-          <PhoneInput
-            ref={phoneInput}
-            defaultValue={userData.phoneNumber}
-            defaultCode="DM"
-            layout="first"
-            onChangeText={text => {
-              setUserData({...userData, phoneNumber: text});
-            }}
-            containerStyle={styles.phoneInput}
-            textContainerStyle={styles.textContainer}
-            textInputStyle={styles.textInput}
-            codeTextStyle={styles.codeStyle}
-            textInputProps={{
-              onBlur: () => {
-                const checkValid = phoneInput.current?.isValidNumber(
-                  userData.phoneNumber,
-                );
-                setValid(checkValid ? checkValid : false);
-              },
-            }}
-          />
-          {!emailError && (
-            <Text style={styles.errorMessage}>Invalid Email Address</Text>
-          )}
-          <Input
-            placeholder={'Email'}
-            value={userData.email}
-            onTextChange={text => setUserData({...userData, email: text})}
-            onBlur={() => setEmailError(validateEmail(userData.email))}
-          />
-        </View>
+          <View style={styles.inputView}>
+            <Input
+              placeholder={'First Name'}
+              value={userData.firstname}
+              onTextChange={text => setUserData({...userData, firstname: text})}
+            />
+            <Input
+              placeholder={'Last Name'}
+              value={userData.lastName}
+              onTextChange={text => setUserData({...userData, lastName: text})}
+            />
+            {!valid && (
+              <Text style={styles.errorMessage}>Invalid Phone number</Text>
+            )}
+            <PhoneInput
+              ref={phoneInput}
+              defaultValue={userData.phoneNumber}
+              defaultCode="DM"
+              layout="first"
+              onChangeText={text => {
+                setUserData({...userData, phoneNumber: text});
+              }}
+              containerStyle={styles.phoneInput}
+              textContainerStyle={styles.textContainer}
+              textInputStyle={styles.textInput}
+              codeTextStyle={styles.codeStyle}
+              textInputProps={{
+                onBlur: () => {
+                  const checkValid = phoneInput.current?.isValidNumber(
+                    userData.phoneNumber,
+                  );
+                  setValid(checkValid ? checkValid : false);
+                },
+              }}
+            />
+            {!emailError && (
+              <Text style={styles.errorMessage}>Invalid Email Address</Text>
+            )}
+            <Input
+              placeholder={'Email'}
+              value={userData.email}
+              onTextChange={text => setUserData({...userData, email: text})}
+              onBlur={() => setEmailError(validateEmail(userData.email))}
+            />
+          </View>
 
-        <View style={styles.buttonGroup}>
-          <Primary
-            title="Sign Up"
-            onPress={() => {
-              if (!disabled) navigate(CoreRoutes.GOOGLE);
-            }}
-            disabled={disabled}
-          />
-          <Tetiary
-            title="I already have an account"
-            onPress={() => navigate(CoreRoutes.LOGIN)}
-          />
+          <View style={styles.buttonGroup}>
+            <Primary
+              title="Sign Up"
+              onPress={buttonPressed}
+              disabled={disabled}
+            />
+            <Tetiary
+              title="I already have an account"
+              onPress={() => navigate(CoreRoutes.LOGIN)}
+            />
+          </View>
         </View>
-      </View>
+      </Fragment>
     </TouchableWithoutFeedback>
   );
 };
@@ -186,5 +206,18 @@ const styles = StyleSheet.create({
   buttonGroup: {
     marginHorizontal: '5%',
     marginVertical: '5%',
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    zIndex: 1, // Ensure it's above other components
+  },
+  loadingAnimation: {
+    width: '50%',
+    aspectRatio: 1,
   },
 });
