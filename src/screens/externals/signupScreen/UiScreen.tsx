@@ -137,7 +137,7 @@ export const SignUp = () => {
               disabled={disabled}
             />
             <Tetiary
-              title="I already have an account"
+              title="Already have an account?"
               onPress={() => navigate(CoreRoutes.LOGIN)}
             />
           </View>
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   },
   buttonGroup: {
     marginHorizontal: '5%',
-    marginVertical: '5%',
+    marginVertical: '15%',
   },
   loadingOverlay: {
     position: 'absolute',

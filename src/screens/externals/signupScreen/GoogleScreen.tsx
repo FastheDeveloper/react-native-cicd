@@ -89,7 +89,9 @@ export const GoogleScreen = () => {
                 <Text style={{color: '#0F6DDC'}}>
                   and gain full access to all features,
                 </Text>
-                <Text style={{color: '#0F6DDC'}}>click the button below.</Text>
+                <Text style={{color: '#0F6DDC', marginBottom: '5%'}}>
+                  click the button below.
+                </Text>
               </View>
             </View>
             <Primary

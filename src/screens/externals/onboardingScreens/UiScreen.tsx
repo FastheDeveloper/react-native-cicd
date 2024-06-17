@@ -19,7 +19,7 @@ export const Onboarding = () => {
     },
     {
       icon: require('../../../lib/assets/halfzoomed.png'),
-      title: 'Welcome to the News App',
+      title: 'Welcome to NewStory',
       description: 'This app is my submission for the Lendsqr assessment.',
     },
     {

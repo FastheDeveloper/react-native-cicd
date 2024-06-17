@@ -91,7 +91,9 @@ export const Login = () => {
                 <Text style={{color: '#0F6DDC'}}>
                   and gain full access to all features,
                 </Text>
-                <Text style={{color: '#0F6DDC'}}>click the button below.</Text>
+                <Text style={{color: '#0F6DDC', marginBottom: '5%'}}>
+                  click the button below.
+                </Text>
               </View>
             </View>
             <Primary
@@ -101,7 +103,7 @@ export const Login = () => {
               }}
             />
             <Tetiary
-              title="I dont have an account yet"
+              title="Don't have an account?"
               onPress={() => navigate(CoreRoutes.SIGNUP)}
             />
           </View>

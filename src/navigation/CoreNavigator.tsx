@@ -22,6 +22,12 @@ const options = {
   headerShown: false,
 };
 
+/**
+ * MainNavigator is the root navigator for the app.
+ * It determines which screen to show based on app state like theme loaded,
+ * user logged in status, KYC status, and passcode status.
+ * Renders nested navigators like Drawer and Tab.
+ */
 export const MainNavigator = () => {
   const {userData, id} = useSelector((state: RootState) => state.user);
   const [onboardedUser, setOnBoardedUser] = useState(false);
