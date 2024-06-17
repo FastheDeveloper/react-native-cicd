@@ -1,9 +1,7 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {persistStorage, STORAGE_KEYS} from '@core/services/storage';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {CoreRoutesParams} from '@navigation/types';
+
 import {navigate} from '@utils/navigationUtils';
 import {CoreRoutes} from '@navigation/routes';
 import Animated, {
@@ -12,10 +10,7 @@ import Animated, {
   SlideOutRight,
 } from 'react-native-reanimated';
 
-type HomeScreenNavigationProp = StackNavigationProp<CoreRoutesParams>;
-
 export const Onboarding = () => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
   const onboardingSteps = [
     {
       icon: require('../../../lib/assets/nozoom.png'),
@@ -43,15 +38,6 @@ export const Onboarding = () => {
       endOnboarding();
     } else {
       setStep(step + 1);
-    }
-  };
-
-  const onReverse = () => {
-    const isFirstScreen = step === 0;
-    if (isFirstScreen) {
-      endOnboarding();
-    } else {
-      setStep(step - 1);
     }
   };
 

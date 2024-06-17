@@ -1,14 +1,8 @@
-import {
-  CommonActions,
-  DrawerActions,
-  NavigationContainerRef,
-} from '@react-navigation/native';
+import {NavigationContainerRef} from '@react-navigation/native';
 import React from 'react';
 
 import {AllRoutes} from '@navigation/routes';
 import {AllRoutesParams} from '@navigation/types';
-
-import {wait} from './commonUtils';
 
 export const navigationRef =
   React.createRef<NavigationContainerRef<AllRoutesParams>>();

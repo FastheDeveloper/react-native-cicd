@@ -21,7 +21,6 @@ const userSlice = createSlice({
       state.id = action.payload;
     },
     setUserData: (state: AppState, action: PayloadAction<UserType>) => {
-      console.log(action.payload, '\n\n payload');
       state.userData = action.payload;
     },
     resetUserData: (state: AppState) => {

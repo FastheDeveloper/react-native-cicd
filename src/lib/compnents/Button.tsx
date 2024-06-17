@@ -45,7 +45,7 @@ export const Tetiary = ({disabled, title, onPress}: Props) => {
       style={styles.containerT}
       disabled={disabled}
       onPress={onPress}>
-      <Text style={{color: '#0F6DDC'}}>{title}</Text>
+      <Text style={styles.textDecor}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -68,5 +68,10 @@ const styles = StyleSheet.create({
   containerT: {
     alignItems: 'flex-end',
     paddingVertical: '4%',
+  },
+  textDecor: {
+    color: '#0F6DDC',
+    textDecorationStyle: 'solid',
+    textDecorationLine: 'underline',
   },
 });

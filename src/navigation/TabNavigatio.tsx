@@ -1,9 +1,8 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Route, getFocusedRouteNameFromRoute} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
-import {GestureResponderEvent, Pressable, View, ViewStyle} from 'react-native';
-import {useSelector} from 'react-redux';
-import {RootState} from '@store/reducers';
+import React from 'react';
+import {ViewStyle} from 'react-native';
+
 import {MainRoutes} from './routes';
 
 import {HomeIcon, BookIcon, ProfileIcon} from '@lib/icons/tabIcons';
@@ -34,8 +33,6 @@ const TabComponents = [
 ];
 
 const MainNavigatorUI = () => {
-  const [showOptions, setShowOptions] = useState(false);
-
   const tabNavigatorScreenOptions = {
     headerShown: false,
     tabBarShowLabel: false,
@@ -51,10 +48,7 @@ const MainNavigatorUI = () => {
             component={screen}
             options={params => ({
               tabBarIcon: ({focused}) => {
-                const isContact = showOptions && !focused;
-                return (
-                  <Icon color={focused && !showOptions ? '#0F6DDC' : 'grey'} />
-                );
+                return <Icon color={focused ? '#0F6DDC' : 'grey'} />;
               },
               tabBarStyle: {
                 ...isTabStyleVisible(params),
@@ -91,7 +85,5 @@ const isTabStyleVisible = ({
 };
 
 export const TabNavigator = () => {
-  const {id} = useSelector((state: RootState) => state.user);
-
   return <>{MainNavigatorUI()}</>;
 };

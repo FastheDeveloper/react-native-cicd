@@ -14,7 +14,7 @@ import {Onboarding} from '@screens/externals/onboardingScreens';
 import {Login} from '@screens/externals/loginScreen';
 import {SignUp} from '@screens/externals/signupScreen';
 import GoogleScreen from '@screens/externals/signupScreen/GoogleScreen';
-import {updateUserData} from '@store/reducers/userSlice';
+import {updateUserData, updateUserId} from '@store/reducers/userSlice';
 
 const Stack = createNativeStackNavigator<CoreRoutesParams>();
 
@@ -22,14 +22,8 @@ const options = {
   headerShown: false,
 };
 
-/**
- * MainNavigator is the root navigator for the app.
- * It determines which screen to show based on app state like theme loaded,
- * user logged in status, KYC status, and passcode status.
- * Renders nested navigators like Drawer and Tab.
- */
 export const MainNavigator = () => {
-  const {userData} = useSelector((state: RootState) => state.user);
+  const {userData, id} = useSelector((state: RootState) => state.user);
   const [onboardedUser, setOnBoardedUser] = useState(false);
 
   const getOnboarder = async () => {
@@ -38,6 +32,7 @@ export const MainNavigator = () => {
     );
     const savedUser = await persistStorage.getItem(STORAGE_KEYS.SAVED_USER);
     const savedNews = await persistStorage.getItem(STORAGE_KEYS.SAVED_NEWS);
+    const savedId = await persistStorage.getString(STORAGE_KEYS.SAVED_USER_ID);
 
     if (savedNews) {
       saveNews(savedNews);
@@ -45,6 +40,9 @@ export const MainNavigator = () => {
     }
     if (savedUser) {
       updateUserData(savedUser);
+    }
+    if (savedId) {
+      updateUserId(savedId);
     }
     if (onboardedUser) setOnBoardedUser(true);
   };
@@ -68,7 +66,7 @@ export const MainNavigator = () => {
         ),
       },
       {
-        cond: !userData,
+        cond: !id,
         node: (
           <Fragment>
             <Stack.Screen name={CoreRoutes.SIGNUP} component={SignUp} />

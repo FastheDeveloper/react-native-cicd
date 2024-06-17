@@ -12,7 +12,7 @@ import {Primary} from '@lib/compnents/Button';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import {BigGoogle} from '@lib/icons/googleIcon/GoogleSvg';
-import {updateUserData} from '@store/reducers/userSlice';
+import {updateUserData, updateUserId} from '@store/reducers/userSlice';
 import {STORAGE_KEYS, persistStorage} from '@core/services/storage';
 import {UserType} from '@lib/types/apiTypes';
 
@@ -21,41 +21,47 @@ GoogleSignin.configure({
     '973032847065-jtu768pmput08udd3d0o0cb5t3k912b3.apps.googleusercontent.com',
 });
 
-async function onGoogleButtonPress() {
-  // Check if your device supports Google Play
-  await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-  // Get the users ID token
-  const {idToken} = await GoogleSignin.signIn();
-
-  // Create a Google credential with the token
-  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  console.log(idToken, ' :id tokwn', googleCredential, ' :googleCred');
-  // Sign-in the user with the credential
-  return auth().signInWithCredential(googleCredential);
-}
-
 export const GoogleScreen = () => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<UserType | null>();
 
-  function onAuthStateChanged(user: any) {
-    if (user) {
-      const {displayName, email, photoURL, uid} = user;
+  async function onGoogleButtonPress() {
+    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+
+    const {idToken} = await GoogleSignin.signIn();
+
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    const currentUser = auth().currentUser;
+
+    if (currentUser) {
+      const {displayName, email, photoURL, uid} = currentUser;
       setUser({displayName, email, photoURL, uid});
     } else {
       setUser(null);
     }
+    if (idToken) {
+      updateUserId(idToken);
+      await persistStorage.set(STORAGE_KEYS.SAVED_USER_ID, idToken);
+    }
+
+    return auth().signInWithCredential(googleCredential);
+  }
+  function onAuthStateChanged(user: any) {
     if (initializing) setInitializing(false);
   }
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+    return subscriber;
   }, []);
 
   const updateUser = async () => {
-    console.log('runnisg update user');
     updateUserData(user as UserType);
-    await persistStorage.setItem(STORAGE_KEYS.SAVED_USER, user as UserType);
+    await persistStorage
+      .setItem(STORAGE_KEYS.SAVED_USER, user as UserType)
+      .then(() => {
+        setUser(null);
+      });
   };
 
   useEffect(() => {
@@ -63,17 +69,6 @@ export const GoogleScreen = () => {
   }, [user]);
 
   if (initializing) return <ActivityIndicator />;
-
-  console.log(user);
-
-  const signOut = async () => {
-    try {
-      await GoogleSignin.signOut();
-      setUser(null);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -102,7 +97,6 @@ export const GoogleScreen = () => {
               onPress={() => {
                 onGoogleButtonPress().then(async () => {});
               }}
-              //   disabled={disabled}
             />
           </View>
         </View>
