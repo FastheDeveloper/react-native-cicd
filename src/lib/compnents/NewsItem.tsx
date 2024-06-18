@@ -6,11 +6,12 @@ interface Props {
   imageUrl?: string;
   title?: string;
   date?: string;
+  onPress?: () => void;
   //   authorName?
 }
-export const NewsItem = ({imageUrl, title, date}: Props) => {
+export const NewsItem = ({imageUrl, title, date, onPress}: Props) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image source={{uri: imageUrl}} style={styles.image} />
       <View
         style={{

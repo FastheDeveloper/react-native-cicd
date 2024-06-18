@@ -20,6 +20,7 @@ import {
   updateUserOnboarded,
 } from '@store/reducers/userSlice';
 import {HomeScreen} from '@screens/internals/homeScreen';
+import DetailedNewsScreen from '@screens/internals/detailedNewScreen/DetailedNewsScreen';
 
 const Stack = createNativeStackNavigator<CoreRoutesParams>();
 
@@ -94,6 +95,10 @@ export const MainNavigator = () => {
         node: (
           <Fragment>
             <Stack.Screen name={CoreRoutes.HOME} component={HomeScreen} />
+            <Stack.Screen
+              name={CoreRoutes.DETAILED}
+              component={DetailedNewsScreen}
+            />
           </Fragment>
         ),
       },

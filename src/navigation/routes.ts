@@ -3,6 +3,7 @@ export enum CoreRoutes {
   ONBOARD = 'ONBOARD',
   LOGIN = 'LOGIN',
   HOME = 'HOME',
+  DETAILED = 'DETAILED',
   GOOGLE = 'GOOGLE',
 }
 

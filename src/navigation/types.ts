@@ -1,3 +1,4 @@
+import {NewsArticle} from '@lib/types/apiTypes';
 import {CoreRoutes, MainRoutes, ProfileRoutes} from './routes';
 
 export type CoreRoutesParams = {
@@ -6,6 +7,7 @@ export type CoreRoutesParams = {
   [CoreRoutes.ONBOARD]: undefined;
   [CoreRoutes.LOGIN]: undefined;
   [CoreRoutes.GOOGLE]: undefined;
+  [CoreRoutes.DETAILED]: {item?: NewsArticle; selectedTitle: string};
 };
 
 export type MainRoutesParams = {

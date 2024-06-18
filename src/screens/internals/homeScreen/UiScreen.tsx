@@ -1,7 +1,6 @@
 import {
   FlatList,
   Image,
-  ImageSourcePropType,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -24,6 +23,8 @@ import {
   WarData,
 } from '@core/constants/titleData';
 import {LoadingNewsItem, NewsItem} from '@lib/compnents/NewsItem';
+import {navigate} from '@utils/navigationUtils';
+import {CoreRoutes} from '@navigation/routes';
 
 export const HomeScreen = () => {
   const signOut = async () => {
@@ -93,7 +94,9 @@ export const HomeScreen = () => {
         </View>
       </View>
 
-      <Pressable style={styles.breakingNewSection}>
+      <Pressable
+        style={styles.breakingNewSection}
+        onPress={() => navigate(CoreRoutes.DETAILED, {item: TestData[0]})}>
         <Text style={styles.welcomeText}>Breaking News</Text>
         <View style={styles.breakingComponent}>
           <Image
@@ -154,7 +157,6 @@ export const HomeScreen = () => {
             </TouchableOpacity>
           )}
         />
-        {/* <View style={{marginBottom: 10}} /> */}
 
         {selectedTitle === 'GENERAL' && (
           <>
@@ -166,6 +168,12 @@ export const HomeScreen = () => {
                     title={item.title}
                     imageUrl={item.urlToImage}
                     date={convertToReadableDate(item.publishedAt)}
+                    onPress={() =>
+                      navigate(CoreRoutes.DETAILED, {
+                        item: item,
+                        selectedTitle: selectedTitle,
+                      })
+                    }
                   />
                 ))}
               </View>
@@ -189,6 +197,12 @@ export const HomeScreen = () => {
                     title={item.title}
                     imageUrl={item.urlToImage}
                     date={convertToReadableDate(item.publishedAt)}
+                    onPress={() =>
+                      navigate(CoreRoutes.DETAILED, {
+                        item: item,
+                        selectedTitle: selectedTitle,
+                      })
+                    }
                   />
                 ))}
               </View>
@@ -212,6 +226,12 @@ export const HomeScreen = () => {
                     title={item.title}
                     imageUrl={item.urlToImage}
                     date={convertToReadableDate(item.publishedAt)}
+                    onPress={() =>
+                      navigate(CoreRoutes.DETAILED, {
+                        item: item,
+                        selectedTitle: selectedTitle,
+                      })
+                    }
                   />
                 ))}
               </View>
@@ -235,6 +255,12 @@ export const HomeScreen = () => {
                     title={item.title}
                     imageUrl={item.urlToImage}
                     date={convertToReadableDate(item.publishedAt)}
+                    onPress={() =>
+                      navigate(CoreRoutes.DETAILED, {
+                        item: item,
+                        selectedTitle: selectedTitle,
+                      })
+                    }
                   />
                 ))}
               </View>
