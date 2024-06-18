@@ -19,6 +19,7 @@ import {
   updateUserId,
   updateUserOnboarded,
 } from '@store/reducers/userSlice';
+import {HomeScreen} from '@screens/internals/homeScreen';
 
 const Stack = createNativeStackNavigator<CoreRoutesParams>();
 
@@ -92,7 +93,7 @@ export const MainNavigator = () => {
         cond: true,
         node: (
           <Fragment>
-            <Stack.Screen name={CoreRoutes.HOME} component={TabNavigator} />
+            <Stack.Screen name={CoreRoutes.HOME} component={HomeScreen} />
           </Fragment>
         ),
       },

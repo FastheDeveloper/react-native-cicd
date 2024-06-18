@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ImageSourcePropType,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -15,7 +16,13 @@ import {resetUserStoreData} from '@store/reducers/userSlice';
 import {RootState} from '@store/reducers';
 import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {TITLES, TestData} from '@core/constants/titleData';
+import {
+  AfricaData,
+  TECHDATA,
+  TITLES,
+  TestData,
+  WarData,
+} from '@core/constants/titleData';
 import {LoadingNewsItem, NewsItem} from '@lib/compnents/NewsItem';
 
 export const HomeScreen = () => {
@@ -86,7 +93,7 @@ export const HomeScreen = () => {
         </View>
       </View>
 
-      <View style={styles.breakingNewSection}>
+      <Pressable style={styles.breakingNewSection}>
         <Text style={styles.welcomeText}>Breaking News</Text>
         <View style={styles.breakingComponent}>
           <Image
@@ -104,7 +111,7 @@ export const HomeScreen = () => {
                   {TestData[0].author}{' '}
                 </Text>
                 <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
-                  - {TestData[0].source.name}
+                  - {TestData[1].source.name}
                 </Text>
               </View>
               <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
@@ -113,7 +120,7 @@ export const HomeScreen = () => {
             </View>
           </View>
         </View>
-      </View>
+      </Pressable>
 
       <View style={styles.otherNews}>
         <View style={{marginTop: '10%'}} />
@@ -149,22 +156,95 @@ export const HomeScreen = () => {
         />
         {/* <View style={{marginBottom: 10}} /> */}
 
-        {!loading ? (
+        {selectedTitle === 'GENERAL' && (
           <>
-            {TestData.slice(1).map((item, index) => (
-              <NewsItem
-                key={index}
-                title={item.title}
-                imageUrl={item.urlToImage}
-                date={convertToReadableDate(item.publishedAt)}
-              />
-            ))}
+            {!loading ? (
+              <View style={{marginHorizontal: '5%'}}>
+                {TestData.slice(1).map((item, index) => (
+                  <NewsItem
+                    key={index}
+                    title={item.title}
+                    imageUrl={item.urlToImage}
+                    date={convertToReadableDate(item.publishedAt)}
+                  />
+                ))}
+              </View>
+            ) : (
+              <View style={{marginHorizontal: '5%'}}>
+                {[1, 2, 3].map((item, index) => (
+                  <LoadingNewsItem key={index} />
+                ))}
+              </View>
+            )}
           </>
-        ) : (
+        )}
+
+        {selectedTitle === 'WAR' && (
           <>
-            {[1, 2, 3].map((item, index) => (
-              <LoadingNewsItem key={index} />
-            ))}
+            {!loading ? (
+              <View style={{marginHorizontal: '5%'}}>
+                {WarData.map((item, index) => (
+                  <NewsItem
+                    key={index}
+                    title={item.title}
+                    imageUrl={item.urlToImage}
+                    date={convertToReadableDate(item.publishedAt)}
+                  />
+                ))}
+              </View>
+            ) : (
+              <View style={{marginHorizontal: '5%'}}>
+                {[1, 2, 3].map((item, index) => (
+                  <LoadingNewsItem key={index} />
+                ))}
+              </View>
+            )}
+          </>
+        )}
+
+        {selectedTitle === 'AFRICA' && (
+          <>
+            {!loading ? (
+              <View style={{marginHorizontal: '5%'}}>
+                {AfricaData.map((item, index) => (
+                  <NewsItem
+                    key={index}
+                    title={item.title}
+                    imageUrl={item.urlToImage}
+                    date={convertToReadableDate(item.publishedAt)}
+                  />
+                ))}
+              </View>
+            ) : (
+              <View style={{marginHorizontal: '5%'}}>
+                {[1, 2, 3].map((item, index) => (
+                  <LoadingNewsItem key={index} />
+                ))}
+              </View>
+            )}
+          </>
+        )}
+
+        {selectedTitle === 'TECHNOLOGY' && (
+          <>
+            {!loading ? (
+              <View style={{marginHorizontal: '5%'}}>
+                {TECHDATA.map((item, index) => (
+                  <NewsItem
+                    key={index}
+                    title={item.title}
+                    imageUrl={item.urlToImage}
+                    date={convertToReadableDate(item.publishedAt)}
+                  />
+                ))}
+              </View>
+            ) : (
+              <View style={{marginHorizontal: '5%'}}>
+                {[1, 2, 3].map((item, index) => (
+                  <LoadingNewsItem key={index} />
+                ))}
+              </View>
+            )}
           </>
         )}
       </View>
@@ -217,6 +297,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     marginTop: '10%',
     marginHorizontal: '2%',
+    // paddingHorizontal: '5%',
   },
   breakingImage: {
     width: '100%',
@@ -228,7 +309,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 32,
     // overflow: 'hidden',
-    padding: '2%',
+    padding: '5%',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -250,6 +331,7 @@ const styles = StyleSheet.create({
   breakingInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: '5%',
   },
   tab: {
     // backgroundColor: 'grey',

@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import Calendar from '@lib/icons/calendarIcon/Calendar';
 import {Skeleton} from '@rneui/base';
@@ -10,7 +10,7 @@ interface Props {
 }
 export const NewsItem = ({imageUrl, title, date}: Props) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container}>
       <Image source={{uri: imageUrl}} style={styles.image} />
       <View
         style={{
@@ -36,7 +36,7 @@ export const NewsItem = ({imageUrl, title, date}: Props) => {
           </View> */}
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
