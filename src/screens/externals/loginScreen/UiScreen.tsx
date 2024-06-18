@@ -74,13 +74,13 @@ export const Login = () => {
             <View style={{alignItems: 'center'}}>
               <BigGoogle />
               <View style={{alignItems: 'center', marginVertical: '7%'}}>
-                <Text style={{color: '#0F6DDC'}}>
+                <Text style={{color: '#495057'}}>
                   To complete log into the app
                 </Text>
-                <Text style={{color: '#0F6DDC'}}>
+                <Text style={{color: '#495057'}}>
                   and gain full access to all features,
                 </Text>
-                <Text style={{color: '#0F6DDC', marginBottom: '5%'}}>
+                <Text style={{color: '#495057', marginBottom: '5%'}}>
                   click the button below.
                 </Text>
               </View>

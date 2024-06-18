@@ -118,13 +118,13 @@ const style = StyleSheet.create({
   },
   HeaderText: {
     fontSize: 32,
-    color: '#0F6DDC',
+    color: '#495057',
     fontWeight: 'bold',
     textAlign: 'center',
   },
   subHeader: {
     textAlign: 'center',
-    color: '#0F6DDC',
+    color: '#495057',
     fontSize: 16,
   },
 
