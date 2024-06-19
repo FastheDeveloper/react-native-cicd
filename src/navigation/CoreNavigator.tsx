@@ -31,7 +31,10 @@ import DetailedNewsScreen from '@screens/internals/detailedNewScreen/DetailedNew
 import {createApiInstance} from '@hooks/useAPI';
 import {apiKey} from '@core/constants/titleData';
 import {NewNewsArticle, NewsArticle} from '@lib/types/apiTypes';
+import NetInfo from '@react-native-community/netinfo';
+
 import {aggregator} from '@core/services/newsFetcher';
+import Noservice from '@screens/externals/NoService/Noservice';
 
 const Stack = createNativeStackNavigator<CoreRoutesParams>();
 
@@ -50,7 +53,7 @@ export const MainNavigator = () => {
     (state: RootState) => state.user,
   );
   const [onboardedUser, setOnBoardedUser] = useState(false);
-
+  const [isOffline, setIsOffline] = useState(false);
   const getOnboarder = async () => {
     const onboardedUser = await persistStorage.getBoolean(
       STORAGE_KEYS.ONBOARDED_USER,
@@ -80,9 +83,26 @@ export const MainNavigator = () => {
     aggregator();
     //run above then hide spashscreen here
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsOffline(!state.isConnected);
+    });
+    return () => {
+      unsubscribe();
+    };
+  });
   console.log(userData?.uid, ' Usr data in core');
   const renderApp = () => {
     const list = [
+      {
+        cond: isOffline,
+        node: (
+          <Fragment>
+            <Stack.Screen name={CoreRoutes.NO_SERVICE} component={Noservice} />
+          </Fragment>
+        ),
+      },
       {
         cond: !userOnboarded,
         node: (

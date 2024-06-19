@@ -8,6 +8,7 @@ export type CoreRoutesParams = {
   [CoreRoutes.LOGIN]: undefined;
   [CoreRoutes.GOOGLE]: undefined;
   [CoreRoutes.DETAILED]: {item?: NewsArticle; selectedTitle: string};
+  [CoreRoutes.NO_SERVICE]: undefined;
 };
 
 export type MainRoutesParams = {

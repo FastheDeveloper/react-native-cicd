@@ -5,6 +5,7 @@ export enum CoreRoutes {
   HOME = 'HOME',
   DETAILED = 'DETAILED',
   GOOGLE = 'GOOGLE',
+  NO_SERVICE = 'NO_SERVICE',
 }
 
 export enum MainRoutes {
