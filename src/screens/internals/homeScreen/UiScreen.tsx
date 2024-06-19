@@ -25,6 +25,7 @@ import {
 import {LoadingNewsItem, NewsItem} from '@lib/compnents/NewsItem';
 import {navigate} from '@utils/navigationUtils';
 import {CoreRoutes} from '@navigation/routes';
+import {Skeleton} from '@rneui/base';
 
 export const HomeScreen = () => {
   const signOut = async () => {
@@ -38,8 +39,12 @@ export const HomeScreen = () => {
     }
   };
   const {userData} = useSelector((state: RootState) => state.user);
+  const {generalNews, loading, africaNews, warNews} = useSelector(
+    (state: RootState) => state.news,
+  );
+
   const [selectedTitle, setSelectedTitle] = useState('GENERAL');
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const formatDate = (date: {
     toLocaleDateString: (
       arg0: string,
@@ -73,6 +78,7 @@ export const HomeScreen = () => {
     return readableDate;
   }
 
+  console.log(generalNews, ' GEN');
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.headers}>
@@ -96,32 +102,45 @@ export const HomeScreen = () => {
 
       <Pressable
         style={styles.breakingNewSection}
-        onPress={() => navigate(CoreRoutes.DETAILED, {item: TestData[0]})}>
+        onPress={() => navigate(CoreRoutes.DETAILED, {item: generalNews[0]})}>
         <Text style={styles.welcomeText}>Breaking News</Text>
         <View style={styles.breakingComponent}>
-          <Image
-            source={{
-              uri: TestData[0].urlToImage,
-            }}
-            style={styles.breakingImage}
-          />
+          {!loading ? (
+            <>
+              <Image
+                source={{
+                  uri: generalNews[0]?.urlToImage,
+                }}
+                style={styles.breakingImage}
+              />
 
-          <View style={styles.breakingTitle}>
-            <Text style={styles.textTitle}>{TestData[0].title}</Text>
-            <View style={styles.breakingInfo}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
-                  {TestData[0].author}{' '}
-                </Text>
-                <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
-                  - {TestData[1].source.name}
-                </Text>
+              <View style={styles.breakingTitle}>
+                <Text style={styles.textTitle}>{generalNews[0]?.title}</Text>
+                <View style={styles.breakingInfo}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
+                      {generalNews[0]?.author}{' '}
+                    </Text>
+                    <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
+                      - {generalNews[0]?.source?.name}
+                    </Text>
+                  </View>
+                  <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
+                    {generalNews[0]?.publishedAt}
+                  </Text>
+                </View>
               </View>
-              <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
-                {convertToReadableDate(TestData[0].publishedAt)}
-              </Text>
-            </View>
-          </View>
+            </>
+          ) : (
+            <>
+              <Skeleton
+                style={{width: '100%', height: 150}}
+                animation="pulse"
+              />
+              <View style={{marginVertical: '3%'}} />
+              <Skeleton style={{width: '100%', height: 20}} animation="pulse" />
+            </>
+          )}
         </View>
       </Pressable>
 
@@ -162,12 +181,12 @@ export const HomeScreen = () => {
           <>
             {!loading ? (
               <View style={{marginHorizontal: '5%'}}>
-                {TestData.slice(1).map((item, index) => (
+                {generalNews.slice(1).map((item, index) => (
                   <NewsItem
                     key={index}
-                    title={item.title}
-                    imageUrl={item.urlToImage}
-                    date={convertToReadableDate(item.publishedAt)}
+                    title={item?.title}
+                    imageUrl={item?.urlToImage}
+                    date={item?.publishedAt}
                     onPress={() =>
                       navigate(CoreRoutes.DETAILED, {
                         item: item,
@@ -191,12 +210,12 @@ export const HomeScreen = () => {
           <>
             {!loading ? (
               <View style={{marginHorizontal: '5%'}}>
-                {WarData.map((item, index) => (
+                {warNews.map((item, index) => (
                   <NewsItem
                     key={index}
-                    title={item.title}
-                    imageUrl={item.urlToImage}
-                    date={convertToReadableDate(item.publishedAt)}
+                    title={item?.title}
+                    imageUrl={item?.urlToImage}
+                    date={item?.publishedAt}
                     onPress={() =>
                       navigate(CoreRoutes.DETAILED, {
                         item: item,
@@ -220,12 +239,12 @@ export const HomeScreen = () => {
           <>
             {!loading ? (
               <View style={{marginHorizontal: '5%'}}>
-                {AfricaData.map((item, index) => (
+                {africaNews.map((item, index) => (
                   <NewsItem
                     key={index}
-                    title={item.title}
-                    imageUrl={item.urlToImage}
-                    date={convertToReadableDate(item.publishedAt)}
+                    title={item?.title}
+                    imageUrl={item?.urlToImage}
+                    date={convertToReadableDate(item?.publishedAt)}
                     onPress={() =>
                       navigate(CoreRoutes.DETAILED, {
                         item: item,

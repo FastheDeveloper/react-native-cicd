@@ -12,7 +12,14 @@ interface Props {
 export const NewsItem = ({imageUrl, title, date, onPress}: Props) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Image source={{uri: imageUrl}} style={styles.image} />
+      <Image
+        source={{
+          uri: imageUrl
+            ? imageUrl
+            : 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgKGPHxg2vWy_cisaKH6ry9hPwULEtZsaqTseBZKfXidmXOCmczY4FhHYhBB4f3SsDiS_W8EM8IQH2qg_toA94ez_WmAjh69UqBLReN2PKz6nh2y75l3YLZZ0VueHnz0YURpn5NaREe4v-8ol88tML1L1ob6Xk-d025Ja5ImTrpasCFXpq5eODfrRfA/w1200-h630-p-k-no-nu/Japanese%20and%20Africans.jpg',
+        }}
+        style={styles.image}
+      />
       <View
         style={{
           //   backgroundColor: 'blue',

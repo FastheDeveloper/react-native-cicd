@@ -192,3 +192,5 @@ export const TECHDATA = [
       'By Farooq Kperogi\r\nTwitter: @farooqkperogi\r\nMost Japanese words and names sound like—and actually appear in—most languages in west, central, east, and even southern African. The reverse is also true:… [+4670 chars]',
   },
 ];
+
+export const apiKey = 'pub_46736bad592369f5d2dd095c94662404838f1';
