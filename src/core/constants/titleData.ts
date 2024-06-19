@@ -1,7 +1,7 @@
 export const TITLES = [
   '   GENERAL   ',
-  '   AFRICA   ',
-  '   WAR   ',
+  '   POLITICS   ',
+  '   SPORTS   ',
   '   TECHNOLOGY   ',
 ] as const;
 
@@ -193,4 +193,4 @@ export const TECHDATA = [
   },
 ];
 
-export const apiKey = 'pub_46736bad592369f5d2dd095c94662404838f1';
+export const apiKey = 'pub_467617f3c93b3232d0a7b7f5a2913118bac38';

@@ -14,6 +14,7 @@ import {
   setAfrica,
   setGeneralNews,
   setLoadingState,
+  setTechNews,
   setWarNews,
 } from '@store/reducers/newSlice/newsDispatchAction';
 import {Onboarding} from '@screens/externals/onboardingScreens';
@@ -30,6 +31,7 @@ import DetailedNewsScreen from '@screens/internals/detailedNewScreen/DetailedNew
 import {createApiInstance} from '@hooks/useAPI';
 import {apiKey} from '@core/constants/titleData';
 import {NewNewsArticle, NewsArticle} from '@lib/types/apiTypes';
+import {aggregator} from '@core/services/newsFetcher';
 
 const Stack = createNativeStackNavigator<CoreRoutesParams>();
 
@@ -73,81 +75,9 @@ export const MainNavigator = () => {
     }
   };
 
-  function convertToNewsArticle(newData: NewNewsArticle): NewsArticle {
-    return {
-      source: {
-        id: newData.source_id,
-        name: newData.source_id, // Assuming the name can be the same as the id
-      },
-      author: newData.creator !== null ? newData.creator[0] : 'Unknown', // Fallback if the creator array is empty
-      title: newData.title,
-      description: newData.description,
-      url: newData.source_url,
-      urlToImage: newData.image_url,
-      publishedAt: newData.pubDate.split(' ')[0], // Taking the date part
-      content: `${newData.description} \n${newData.content}`,
-    };
-  }
-  const getTopNews = async () => {
-    setLoadingState(true);
-    try {
-      const api = createApiInstance({});
-      const response = await api.get(`/latest?apikey=${apiKey}&country=ng`);
-      // console.log(response, ' RESPOSN');
-      const converted = response.data.results.map((article: NewNewsArticle) =>
-        convertToNewsArticle(article),
-      );
-      console.log(converted, 'CONVERTED NEWS ARTICLES');
-      setGeneralNews(converted);
-    } catch (e) {
-      console.log(e, 'error');
-    } finally {
-      setLoadingState(false);
-    }
-  };
-
-  const getAfricaNews = async () => {
-    setLoadingState(true);
-    try {
-      const api = createApiInstance({});
-      const response = await api.get(
-        `/latest?apikey=${apiKey}&category=africa`,
-      );
-      // console.log(response, ' RESPOSN');
-      const converted = response.data.results.map((article: NewNewsArticle) =>
-        convertToNewsArticle(article),
-      );
-      console.log(converted, 'CONVERTED NEWS ARTICLES');
-      setAfrica(converted);
-    } catch (e) {
-      console.log(e, 'error');
-    } finally {
-      setLoadingState(false);
-    }
-  };
-
-  const getWarNews = async () => {
-    setLoadingState(true);
-    try {
-      const api = createApiInstance({});
-      const response = await api.get(`/latest?apikey=${apiKey}&country=ps`);
-      // console.log(response, ' RESPOSN');
-      const converted = response.data.results.map((article: NewNewsArticle) =>
-        convertToNewsArticle(article),
-      );
-      console.log(converted, 'CONVERTED war ARTICLES');
-      setWarNews(converted);
-    } catch (e) {
-      console.log(e, 'error');
-    } finally {
-      setLoadingState(false);
-    }
-  };
   useEffect(() => {
     getOnboarder();
-    getTopNews();
-    getAfricaNews();
-    getWarNews();
+    aggregator();
     //run above then hide spashscreen here
   }, []);
   console.log(userData?.uid, ' Usr data in core');

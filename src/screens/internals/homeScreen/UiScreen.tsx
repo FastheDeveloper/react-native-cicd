@@ -39,9 +39,8 @@ export const HomeScreen = () => {
     }
   };
   const {userData} = useSelector((state: RootState) => state.user);
-  const {generalNews, loading, africaNews, warNews} = useSelector(
-    (state: RootState) => state.news,
-  );
+  const {generalNews, loading, africaNews, warNews, techNologyNews} =
+    useSelector((state: RootState) => state.news);
 
   const [selectedTitle, setSelectedTitle] = useState('GENERAL');
   // const [loading, setLoading] = useState(false);
@@ -77,6 +76,9 @@ export const HomeScreen = () => {
 
     return readableDate;
   }
+  const throwError = () => {
+    throw new Error('This is a runtime error!');
+  };
 
   console.log(generalNews, ' GEN');
   return (
@@ -86,59 +88,98 @@ export const HomeScreen = () => {
         <Text style={styles.headerText}>NewStory</Text>
       </View>
       {/* <Text onPress={signOut}>{userData?.displayName}</Text> */}
-      <View style={styles.header}>
-        <Image
-          source={{
-            uri: userData?.photoURL
-              ? userData?.photoURL
-              : 'https://placedog.net/300/300',
-          }}
-          style={styles.image}
-        />
-        <View style={{marginLeft: '3%'}}>
-          <Text style={styles.welcomeText2}>{formattedDate} </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <View style={styles.header}>
+          <Image
+            source={{
+              uri: userData?.photoURL
+                ? userData?.photoURL
+                : 'https://placedog.net/300/300',
+            }}
+            style={styles.image}
+          />
+          <View style={{marginLeft: '3%'}}>
+            <Text style={styles.welcomeText2}>{formattedDate} </Text>
+          </View>
         </View>
+
+        <TouchableOpacity style={styles.errorButton} onPress={throwError}>
+          <Text style={styles.errorButtonText}>Throw Error</Text>
+        </TouchableOpacity>
       </View>
 
       <Pressable
         style={styles.breakingNewSection}
         onPress={() => navigate(CoreRoutes.DETAILED, {item: generalNews[0]})}>
         <Text style={styles.welcomeText}>Breaking News</Text>
-        <View style={styles.breakingComponent}>
-          {!loading ? (
-            <>
-              <Image
-                source={{
-                  uri: generalNews[0]?.urlToImage,
-                }}
-                style={styles.breakingImage}
-              />
 
-              <View style={styles.breakingTitle}>
-                <Text style={styles.textTitle}>{generalNews[0]?.title}</Text>
-                <View style={styles.breakingInfo}>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
-                      {generalNews[0]?.author}{' '}
+        <View style={styles.breakingComponent}>
+          {!(generalNews.length <= 0) ? (
+            <>
+              {!loading ? (
+                <>
+                  <Image
+                    source={{
+                      uri: generalNews[0]?.urlToImage,
+                    }}
+                    style={styles.breakingImage}
+                  />
+
+                  <View style={styles.breakingTitle}>
+                    <Text style={styles.textTitle}>
+                      {generalNews[0]?.title}
                     </Text>
-                    <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
-                      - {generalNews[0]?.source?.name}
-                    </Text>
+                    <View style={styles.breakingInfo}>
+                      <View
+                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
+                          {generalNews[0]?.author}{' '}
+                        </Text>
+                        <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
+                          - {generalNews[0]?.source?.name}
+                        </Text>
+                      </View>
+                      <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
+                        {generalNews[0]?.publishedAt}
+                      </Text>
+                    </View>
                   </View>
-                  <Text style={[styles.welcomeText2, {color: '#A3AAB0'}]}>
-                    {generalNews[0]?.publishedAt}
-                  </Text>
-                </View>
-              </View>
+                </>
+              ) : (
+                <>
+                  <Skeleton
+                    style={{width: '100%', height: 150}}
+                    animation="pulse"
+                  />
+                  <View style={{marginVertical: '3%'}} />
+                  <Skeleton
+                    style={{width: '100%', height: 20}}
+                    animation="pulse"
+                  />
+                </>
+              )}
             </>
           ) : (
             <>
-              <Skeleton
-                style={{width: '100%', height: 150}}
-                animation="pulse"
-              />
-              <View style={{marginVertical: '3%'}} />
-              <Skeleton style={{width: '100%', height: 20}} animation="pulse" />
+              <>
+                <View
+                  style={{
+                    flex: 1,
+                    paddingHorizontal: '5%',
+                    alignItems: 'center',
+                    paddingVertical: '10%',
+                  }}>
+                  <Icon name="newspaper" size={50} color={'#0F6DDC'} />
+                  <Text style={{marginTop: '5%', textAlign: 'center'}}>
+                    No Breaking News Found, Please Try Again soon
+                  </Text>
+                </View>
+              </>
             </>
           )}
         </View>
@@ -206,7 +247,7 @@ export const HomeScreen = () => {
           </>
         )}
 
-        {selectedTitle === 'WAR' && (
+        {selectedTitle === 'SPORTS' && (
           <>
             {!loading ? (
               <View style={{marginHorizontal: '5%'}}>
@@ -235,7 +276,7 @@ export const HomeScreen = () => {
           </>
         )}
 
-        {selectedTitle === 'AFRICA' && (
+        {selectedTitle === 'POLITICS' && (
           <>
             {!loading ? (
               <View style={{marginHorizontal: '5%'}}>
@@ -268,7 +309,7 @@ export const HomeScreen = () => {
           <>
             {!loading ? (
               <View style={{marginHorizontal: '5%'}}>
-                {TECHDATA.map((item, index) => (
+                {techNologyNews.map((item, index) => (
                   <NewsItem
                     key={index}
                     title={item.title}
@@ -290,6 +331,74 @@ export const HomeScreen = () => {
                 ))}
               </View>
             )}
+          </>
+        )}
+
+        {selectedTitle === 'GENERAL' && generalNews.length <= 0 && (
+          <>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: '5%',
+                alignItems: 'center',
+                paddingVertical: '10%',
+              }}>
+              <Icon name="newspaper" size={50} color={'#0F6DDC'} />
+              <Text style={{marginTop: '5%'}}>
+                No News Found, Please Try Again soon
+              </Text>
+            </View>
+          </>
+        )}
+
+        {selectedTitle === 'POLITICS' && africaNews.length <= 0 && (
+          <>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: '5%',
+                alignItems: 'center',
+                paddingVertical: '10%',
+              }}>
+              <Icon name="newspaper" size={50} color={'#0F6DDC'} />
+              <Text style={{marginTop: '5%'}}>
+                No News Found, Please Try Again soon
+              </Text>
+            </View>
+          </>
+        )}
+
+        {selectedTitle === 'SPORTS' && warNews.length <= 0 && (
+          <>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: '5%',
+                alignItems: 'center',
+                paddingVertical: '10%',
+              }}>
+              <Icon name="newspaper" size={50} color={'#0F6DDC'} />
+              <Text style={{marginTop: '5%'}}>
+                No News Found, Please Try Again soon
+              </Text>
+            </View>
+          </>
+        )}
+
+        {selectedTitle === 'TECHNOLOGY' && techNologyNews.length <= 0 && (
+          <>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: '5%',
+                alignItems: 'center',
+                paddingVertical: '10%',
+              }}>
+              <Icon name="newspaper" size={50} color={'#0F6DDC'} />
+              <Text style={{marginTop: '5%'}}>
+                No News Found, Please Try Again soon
+              </Text>
+            </View>
           </>
         )}
       </View>
@@ -388,4 +497,13 @@ const styles = StyleSheet.create({
     width: '100%', // Centers items vertically within the FlatList
   },
   otherNews: {},
+  errorButtonText: {
+    color: '#fff',
+  },
+  errorButton: {
+    paddingVertical: '2%',
+    backgroundColor: '#0F6DDC',
+    paddingHorizontal: '5%',
+    borderRadius: 14,
+  },
 });
