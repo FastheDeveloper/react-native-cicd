@@ -1,4 +1,4 @@
-package com.lendsqrfpnews
+package com.lendsqrfpnews.newsapp
 
 import android.app.Application
 import com.facebook.react.PackageList
@@ -11,7 +11,7 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
 import com.microsoft.codepush.react.CodePush
-
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =

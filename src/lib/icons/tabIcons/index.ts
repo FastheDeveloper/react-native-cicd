@@ -1,0 +1,5 @@
+export * from './bookIcon'
+export * from './contactIcon'
+export * from './homeIcon'
+export * from './profileIcon'
+export * from './walletIcon'
