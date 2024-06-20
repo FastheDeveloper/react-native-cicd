@@ -26,6 +26,7 @@ import {LoadingNewsItem, NewsItem} from '@lib/compnents/NewsItem';
 import {navigate} from '@utils/navigationUtils';
 import {CoreRoutes} from '@navigation/routes';
 import {Skeleton} from '@rneui/base';
+import EmptyRes from '@lib/icons/noResultIcon/emptyRes';
 
 export const HomeScreen = () => {
   const signOut = async () => {
@@ -394,10 +395,7 @@ export const HomeScreen = () => {
                 alignItems: 'center',
                 paddingVertical: '10%',
               }}>
-              <Icon name="newspaper" size={50} color={'#0F6DDC'} />
-              <Text style={{marginTop: '5%'}}>
-                No News Found, Please Try Again soon
-              </Text>
+              <EmptyRes width={'80%'} height={'40%'} />
             </View>
           </>
         )}

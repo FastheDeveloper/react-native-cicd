@@ -1,5 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import EmptyRes from '@lib/icons/noResultIcon/emptyRes';
 
 const Noservice = () => {
   return (
@@ -10,7 +12,8 @@ const Noservice = () => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text>Noservice</Text>
+      <EmptyRes width={'80%'} height={'40%'} />
+      <Text>No Internet connection detected</Text>
     </View>
   );
 };
