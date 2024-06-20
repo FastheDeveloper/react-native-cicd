@@ -65,16 +65,13 @@ export const MainNavigator = () => {
 
   useEffect(() => {
     getOnboarder();
-    aggregator().finally(() => {
-      setAggregatorChecked(true);
-    });
 
     //run above then hide spashscreen here
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
-      if (onBoarderChecked && aggregatorChecked) {
+      if (onBoarderChecked) {
         console.log('All checked');
         SplashScreen.hide();
       }

@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {RootState} from '@store/reducers';
 import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -18,6 +18,7 @@ import {navigate} from '@utils/navigationUtils';
 import {CoreRoutes} from '@navigation/routes';
 import {Skeleton} from '@rneui/base';
 import EmptyRes from '@lib/icons/noResultIcon/emptyRes';
+import {aggregator} from '@core/services/newsFetcher';
 
 export const HomeScreen = () => {
   const {userData} = useSelector((state: RootState) => state.user);
@@ -56,6 +57,10 @@ export const HomeScreen = () => {
   const throwError = () => {
     throw new Error('This is a runtime error!');
   };
+
+  useEffect(() => {
+    aggregator();
+  }, []);
 
   console.log(generalNews, ' GEN');
   return (
