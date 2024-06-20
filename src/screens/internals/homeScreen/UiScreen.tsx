@@ -9,19 +9,10 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import {STORAGE_KEYS, persistStorage} from '@core/services/storage';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {resetUserStoreData} from '@store/reducers/userSlice';
 import {RootState} from '@store/reducers';
 import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {
-  AfricaData,
-  TECHDATA,
-  TITLES,
-  TestData,
-  WarData,
-} from '@core/constants/titleData';
+import {TITLES} from '@core/constants/titleData';
 import {LoadingNewsItem, NewsItem} from '@lib/compnents/NewsItem';
 import {navigate} from '@utils/navigationUtils';
 import {CoreRoutes} from '@navigation/routes';
@@ -29,22 +20,12 @@ import {Skeleton} from '@rneui/base';
 import EmptyRes from '@lib/icons/noResultIcon/emptyRes';
 
 export const HomeScreen = () => {
-  const signOut = async () => {
-    try {
-      await GoogleSignin.signOut();
-      resetUserStoreData();
-      await persistStorage.remove(STORAGE_KEYS.SAVED_USER);
-      await persistStorage.remove(STORAGE_KEYS.SAVED_USER_ID);
-    } catch (e) {
-      console.log(e);
-    }
-  };
   const {userData} = useSelector((state: RootState) => state.user);
   const {generalNews, loading, africaNews, warNews, techNologyNews} =
     useSelector((state: RootState) => state.news);
 
   const [selectedTitle, setSelectedTitle] = useState('GENERAL');
-  // const [loading, setLoading] = useState(false);
+
   const formatDate = (date: {
     toLocaleDateString: (
       arg0: string,
@@ -57,11 +38,6 @@ export const HomeScreen = () => {
 
   const date = new Date();
   const formattedDate = formatDate(date);
-
-  const handleTabPress = (title: string) => {
-    console.log('Tab pressed:', title);
-    // Add your navigation or other logic here
-  };
 
   function convertToReadableDate(dateString: string) {
     // Parse the input date string to a Date object
@@ -88,7 +64,6 @@ export const HomeScreen = () => {
         <Icon name="newspaper" size={30} color={'#0F6DDC'} />
         <Text style={styles.headerText}>NewStory</Text>
       </View>
-      {/* <Text onPress={signOut}>{userData?.displayName}</Text> */}
       <View
         style={{
           flexDirection: 'row',
@@ -410,7 +385,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    // paddingVertical: '5%',
     paddingHorizontal: '5%',
   },
   headers: {

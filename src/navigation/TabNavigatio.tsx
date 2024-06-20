@@ -74,9 +74,7 @@ const isTabStyleVisible = ({
 }): ViewStyle | undefined => {
   let tabBarVisible: ViewStyle | undefined;
   const name = getFocusedRouteNameFromRoute(route);
-  const screensWithoutBottomPanel: string[] = [
-    //TODO: ADD ROUTES WITHOUT BOTTOMBART
-  ];
+  const screensWithoutBottomPanel: string[] = [];
   if (name && screensWithoutBottomPanel.includes(name)) {
     tabBarVisible = {display: 'none'};
   }

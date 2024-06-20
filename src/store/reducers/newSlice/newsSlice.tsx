@@ -49,9 +49,6 @@ const taskSlice = createSlice({
     deleteAllSavedNews: (state: AppState) => {
       state.savedNews = [];
     },
-
-    // completeTask
-    //deleteTask
   },
 });
 

@@ -7,7 +7,6 @@ interface Props {
   title?: string;
   date?: string;
   onPress?: () => void;
-  //   authorName?
 }
 export const NewsItem = ({imageUrl, title, date, onPress}: Props) => {
   return (
@@ -37,11 +36,6 @@ export const NewsItem = ({imageUrl, title, date, onPress}: Props) => {
             <Calendar />
             <Text>{date}</Text>
           </View>
-
-          {/* <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Icon name="pencil" size={24} />
-            <Text style={{marginBottom: -2}}>{date}</Text>
-          </View> */}
         </View>
       </View>
     </TouchableOpacity>
@@ -62,9 +56,9 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: '5%',
     flexDirection: 'row',
-    // alignItems: 'center',
+
     gap: 5,
-    // backgroundColor: 'red',
+
     width: '100%',
     height: 70,
     paddingRight: '25%',
@@ -76,7 +70,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   title: {
-    // marginRight: '20%',
     color: '#000000',
   },
 });

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image, ActivityIndicator} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import React, {useState} from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {CoreRoutesParams} from '@navigation/types';
@@ -6,8 +6,8 @@ import {CoreRoutes} from '@navigation/routes';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/FontAwesome5';
 import {WebView} from 'react-native-webview';
-import {goBack, navigate} from '@utils/navigationUtils';
-import {TestData} from '@core/constants/titleData';
+import {goBack} from '@utils/navigationUtils';
+
 import {Primary} from '@lib/compnents/Button';
 
 type DetailedNewsScreenRouteProp = RouteProp<
@@ -32,7 +32,7 @@ function convertToReadableDate(dateString: string) {
 
 const DetailedNewsScreen = () => {
   const route = useRoute<DetailedNewsScreenRouteProp>();
-  const {item, selectedTitle} = route.params;
+  const {item} = route.params;
   const [showWeb, setShowWeb] = useState(false);
   return (
     <View style={styles.container}>

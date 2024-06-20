@@ -4,7 +4,7 @@ export interface UserMetadata {
 }
 
 export interface MultiFactor {
-  enrolledFactors: any[]; // Adjust the type of enrolledFactors as needed
+  enrolledFactors: any[];
 }
 
 export interface UserType {

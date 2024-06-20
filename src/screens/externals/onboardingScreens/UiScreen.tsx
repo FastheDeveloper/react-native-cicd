@@ -101,8 +101,6 @@ export default Onboarding;
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent:'center',
-    // alignItems:'center',
     backgroundColor: 'white',
     paddingVertical: '5%',
     paddingHorizontal: '5%',
