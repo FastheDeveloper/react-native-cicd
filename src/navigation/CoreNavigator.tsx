@@ -21,7 +21,7 @@ import {
 import {HomeScreen} from '@screens/internals/homeScreen';
 import DetailedNewsScreen from '@screens/internals/detailedNewScreen/DetailedNewsScreen';
 import NetInfo from '@react-native-community/netinfo';
-
+import SplashScreen from 'react-native-splash-screen';
 import {aggregator} from '@core/services/newsFetcher';
 import Noservice from '@screens/externals/NoService/Noservice';
 
@@ -37,6 +37,8 @@ export const MainNavigator = () => {
   );
 
   const [isOffline, setIsOffline] = useState(false);
+  const [onBoarderChecked, setOnBoarderChecked] = useState(false);
+  const [aggregatorChecked, setAggregatorChecked] = useState(false);
   const getOnboarder = async () => {
     const onboardedUser = await persistStorage.getBoolean(
       STORAGE_KEYS.ONBOARDED_USER,
@@ -58,13 +60,26 @@ export const MainNavigator = () => {
     if (onboardedUser) {
       updateUserOnboarded(true);
     }
+    setOnBoarderChecked(true);
   };
 
   useEffect(() => {
     getOnboarder();
-    aggregator();
+    aggregator().finally(() => {
+      setAggregatorChecked(true);
+    });
+
     //run above then hide spashscreen here
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (onBoarderChecked && aggregatorChecked) {
+        console.log('All checked');
+        SplashScreen.hide();
+      }
+    }, 3000);
+  }, [onBoarderChecked, aggregatorChecked]);
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
