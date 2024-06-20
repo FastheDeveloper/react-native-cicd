@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import React from 'react';
 
 export const BookMarks = () => {
@@ -10,5 +10,3 @@ export const BookMarks = () => {
 };
 
 export default BookMarks;
-
-const styles = StyleSheet.create({});

@@ -3,6 +3,9 @@ export enum CoreRoutes {
   ONBOARD = 'ONBOARD',
   LOGIN = 'LOGIN',
   HOME = 'HOME',
+  DETAILED = 'DETAILED',
+  GOOGLE = 'GOOGLE',
+  NO_SERVICE = 'NO_SERVICE',
 }
 
 export enum MainRoutes {

@@ -8,11 +8,22 @@ import _ from 'lodash';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {persistStorage, STORAGE_KEYS} from '@core/services/storage';
-import {TabNavigator} from './TabNavigatio';
 import {saveNews} from '@store/reducers/newSlice/newsDispatchAction';
 import {Onboarding} from '@screens/externals/onboardingScreens';
 import {Login} from '@screens/externals/loginScreen';
 import {SignUp} from '@screens/externals/signupScreen';
+import GoogleScreen from '@screens/externals/signupScreen/GoogleScreen';
+import {
+  updateUserData,
+  updateUserId,
+  updateUserOnboarded,
+} from '@store/reducers/userSlice';
+import {HomeScreen} from '@screens/internals/homeScreen';
+import DetailedNewsScreen from '@screens/internals/detailedNewScreen/DetailedNewsScreen';
+import NetInfo from '@react-native-community/netinfo';
+import SplashScreen from 'react-native-splash-screen';
+import {aggregator} from '@core/services/newsFetcher';
+import Noservice from '@screens/externals/NoService/Noservice';
 
 const Stack = createNativeStackNavigator<CoreRoutesParams>();
 
@@ -20,52 +31,90 @@ const options = {
   headerShown: false,
 };
 
-/**
- * MainNavigator is the root navigator for the app.
- * It determines which screen to show based on app state like theme loaded,
- * user logged in status, KYC status, and passcode status.
- * Renders nested navigators like Drawer and Tab.
- */
 export const MainNavigator = () => {
-  const {userData} = useSelector((state: RootState) => state.user);
-  const [onboardedUser, setOnBoardedUser] = useState(false);
+  const {userData, id, userOnboarded} = useSelector(
+    (state: RootState) => state.user,
+  );
 
+  const [isOffline, setIsOffline] = useState(false);
+  const [onBoarderChecked, setOnBoarderChecked] = useState(false);
+  const [aggregatorChecked, setAggregatorChecked] = useState(false);
   const getOnboarder = async () => {
     const onboardedUser = await persistStorage.getBoolean(
       STORAGE_KEYS.ONBOARDED_USER,
     );
+    const savedUser = await persistStorage.getItem(STORAGE_KEYS.SAVED_USER);
     const savedNews = await persistStorage.getItem(STORAGE_KEYS.SAVED_NEWS);
+    const savedId = await persistStorage.getString(STORAGE_KEYS.SAVED_USER_ID);
 
     if (savedNews) {
       saveNews(savedNews);
-
       console.log(typeof saveNews, 'TASK SAVED IS ');
     }
-    if (onboardedUser) setOnBoardedUser(true);
+    if (savedUser) {
+      updateUserData(savedUser);
+    }
+    if (savedId) {
+      updateUserId(savedId);
+    }
+    if (onboardedUser) {
+      updateUserOnboarded(true);
+    }
+    setOnBoarderChecked(true);
   };
 
   useEffect(() => {
     getOnboarder();
+    aggregator().finally(() => {
+      setAggregatorChecked(true);
+    });
+
+    //run above then hide spashscreen here
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (onBoarderChecked && aggregatorChecked) {
+        console.log('All checked');
+        SplashScreen.hide();
+      }
+    }, 3000);
+  }, [onBoarderChecked, aggregatorChecked]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsOffline(!state.isConnected);
+    });
+    return () => {
+      unsubscribe();
+    };
+  });
+  console.log(userData?.uid, ' Usr data in core');
   const renderApp = () => {
     const list = [
       {
-        cond: !onboardedUser,
+        cond: isOffline,
         node: (
           <Fragment>
-            <Stack.Screen name={CoreRoutes.ONBOARD} component={Onboarding} />
-            <Stack.Screen name={CoreRoutes.SIGNUP} component={SignUp} />
-            <Stack.Screen name={CoreRoutes.LOGIN} component={Login} />
+            <Stack.Screen name={CoreRoutes.NO_SERVICE} component={Noservice} />
           </Fragment>
         ),
       },
       {
-        cond: !userData?.refreshToken,
+        cond: !userOnboarded,
+        node: (
+          <Fragment>
+            <Stack.Screen name={CoreRoutes.ONBOARD} component={Onboarding} />
+          </Fragment>
+        ),
+      },
+      {
+        cond: !id,
         node: (
           <Fragment>
             <Stack.Screen name={CoreRoutes.SIGNUP} component={SignUp} />
             <Stack.Screen name={CoreRoutes.LOGIN} component={Login} />
+            <Stack.Screen name={CoreRoutes.GOOGLE} component={GoogleScreen} />
           </Fragment>
         ),
       },
@@ -74,7 +123,11 @@ export const MainNavigator = () => {
         cond: true,
         node: (
           <Fragment>
-            <Stack.Screen name={CoreRoutes.HOME} component={TabNavigator} />
+            <Stack.Screen name={CoreRoutes.HOME} component={HomeScreen} />
+            <Stack.Screen
+              name={CoreRoutes.DETAILED}
+              component={DetailedNewsScreen}
+            />
           </Fragment>
         ),
       },

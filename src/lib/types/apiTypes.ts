@@ -4,27 +4,13 @@ export interface UserMetadata {
 }
 
 export interface MultiFactor {
-  enrolledFactors: any[]; // Adjust the type of enrolledFactors as needed
-}
-
-interface ProviderData {
-  // Define the structure of providerData objects if known
-  [key: string]: any;
+  enrolledFactors: any[];
 }
 
 export interface UserType {
-  displayName: string;
-  email: string;
-  emailVerified: boolean;
-  isAnonymous: boolean;
-  metadata: UserMetadata;
-  multiFactor: MultiFactor;
-  phoneNumber: string | null;
-  photoURL: string;
-  providerData: ProviderData[];
-  providerId: string;
-  refreshToken: string;
-  tenantId: string | null;
+  displayName: string | null;
+  email: string | null;
+  photoURL: string | null;
   uid: string;
 }
 
@@ -42,4 +28,29 @@ export interface NewsArticle {
   urlToImage: string;
   publishedAt: string;
   content: string;
+}
+
+export interface NewNewsArticle {
+  article_id: string;
+  title: string;
+  link: string;
+  keywords: string[];
+  creator: string[];
+  video_url: string | null;
+  description: string;
+  content: string;
+  pubDate: string;
+  image_url: string;
+  source_id: string;
+  source_priority: number;
+  source_url: string;
+  source_icon: string;
+  language: string;
+  country: string[];
+  category: string[];
+  ai_tag: string;
+  sentiment: string;
+  sentiment_stats: string;
+  ai_region: string;
+  ai_org: string;
 }

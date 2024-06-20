@@ -1,9 +1,7 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {persistStorage, STORAGE_KEYS} from '@core/services/storage';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {CoreRoutesParams} from '@navigation/types';
+
 import {navigate} from '@utils/navigationUtils';
 import {CoreRoutes} from '@navigation/routes';
 import Animated, {
@@ -11,11 +9,9 @@ import Animated, {
   SlideInLeft,
   SlideOutRight,
 } from 'react-native-reanimated';
-
-type HomeScreenNavigationProp = StackNavigationProp<CoreRoutesParams>;
+import {updateUserOnboarded} from '@store/reducers/userSlice';
 
 export const Onboarding = () => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
   const onboardingSteps = [
     {
       icon: require('../../../lib/assets/nozoom.png'),
@@ -24,7 +20,7 @@ export const Onboarding = () => {
     },
     {
       icon: require('../../../lib/assets/halfzoomed.png'),
-      title: 'Welcome to the News App',
+      title: 'Welcome to NewStory',
       description: 'This app is my submission for the Lendsqr assessment.',
     },
     {
@@ -40,31 +36,22 @@ export const Onboarding = () => {
   const onContinue = () => {
     const isLastScreen = step === onboardingSteps.length - 1;
     if (isLastScreen) {
-      console.log('Is lase screen');
       endOnboarding();
     } else {
       setStep(step + 1);
     }
   };
 
-  const onReverse = () => {
-    const isFirstScreen = step === 0;
-    if (isFirstScreen) {
-      endOnboarding();
-    } else {
-      setStep(step - 1);
-    }
-  };
-
   const endOnboarding = async () => {
+    updateUserOnboarded(true);
     await persistStorage.set(STORAGE_KEYS.ONBOARDED_USER, true);
-    navigation.navigate(CoreRoutes.SIGNUP);
+    navigate(CoreRoutes.SIGNUP);
   };
   return (
     <View style={style.container}>
       <Text style={style.skipText}></Text>
       <View style={{alignItems: 'center', marginTop: '5%'}}>
-        <Image source={data.icon} />
+        <Image source={require('../../../lib/assets/zoomed.png')} />
 
         <View style={style.stepContainer}>
           {onboardingSteps.map((dat, index) => (
@@ -79,7 +66,6 @@ export const Onboarding = () => {
         </View>
 
         <View style={style.Headers}>
-          {/* <Text style={style.HeaderText}>Manage your tasks</Text> */}
           <Animated.Text
             entering={SlideInLeft}
             style={style.HeaderText}
@@ -87,7 +73,6 @@ export const Onboarding = () => {
             {data.title}
           </Animated.Text>
           <View style={{marginHorizontal: '10%', marginTop: '5%'}}>
-            {/* <Text style={style.subHeader}>You can easily manage all of your daily tasks in DoMe for free</Text> */}
             <Animated.Text
               entering={FadeInLeft.delay(300)}
               style={style.subHeader}>
@@ -116,8 +101,6 @@ export default Onboarding;
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent:'center',
-    // alignItems:'center',
     backgroundColor: 'white',
     paddingVertical: '5%',
     paddingHorizontal: '5%',
@@ -133,13 +116,13 @@ const style = StyleSheet.create({
   },
   HeaderText: {
     fontSize: 32,
-    color: '#0F6DDC',
+    color: '#495057',
     fontWeight: 'bold',
     textAlign: 'center',
   },
   subHeader: {
     textAlign: 'center',
-    color: '#0F6DDC',
+    color: '#495057',
     fontSize: 16,
   },
 
