@@ -321,7 +321,7 @@ export const HomeScreen = () => {
               }}>
               <Icon name="newspaper" size={50} color={'#0F6DDC'} />
               <Text style={{marginTop: '5%'}}>
-                No News Found, Please Try Again soon
+                No News Found, Please Try Again soon!
               </Text>
             </View>
           </>
