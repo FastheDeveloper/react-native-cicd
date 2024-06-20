@@ -101,6 +101,7 @@ export const SignUp = () => {
               onChangeText={text => {
                 setUserData({...userData, phoneNumber: text});
               }}
+              placeholder="Phone Number"
               containerStyle={styles.phoneInput}
               textContainerStyle={styles.textContainer}
               textInputStyle={styles.textInput}
@@ -112,6 +113,7 @@ export const SignUp = () => {
                   );
                   setValid(checkValid ? checkValid : false);
                 },
+                placeholderTextColor: 'grey',
               }}
             />
             {!emailError && (
