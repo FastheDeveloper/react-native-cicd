@@ -22,9 +22,14 @@ import {HomeScreen} from '@screens/internals/homeScreen';
 import DetailedNewsScreen from '@screens/internals/detailedNewScreen/DetailedNewsScreen';
 import NetInfo from '@react-native-community/netinfo';
 import SplashScreen from 'react-native-splash-screen';
-import {aggregator} from '@core/services/newsFetcher';
+import messaging from '@react-native-firebase/messaging';
 import Noservice from '@screens/externals/NoService/Noservice';
-
+import {
+  getToken,
+  requestUserPermission,
+  notificationListner,
+} from '@utils/firebaseUtils';
+import {Alert} from 'react-native';
 const Stack = createNativeStackNavigator<CoreRoutesParams>();
 
 const options = {
@@ -82,11 +87,39 @@ export const MainNavigator = () => {
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsOffline(!state.isConnected);
     });
+
     return () => {
       unsubscribe();
     };
   });
-  console.log(userData?.uid, ' Usr data in core');
+  const checkStoredToken = async () => {
+    const storedToken = await persistStorage.getString('deviceToken');
+    console.log('gettin storedToke', storedToken);
+    if (storedToken) {
+    } else {
+      console.log('getting token');
+      const storeThis = await getToken();
+      await persistStorage.set('deviceToken', storeThis as string);
+    }
+  };
+
+  useEffect(() => {
+    requestUserPermission();
+    notificationListner();
+
+    checkStoredToken();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('FP News', remoteMessage.notification?.body, [{text: 'OK'}], {
+        cancelable: true,
+      });
+    });
+
+    return unsubscribe;
+  }, []);
+
   const renderApp = () => {
     const list = [
       {

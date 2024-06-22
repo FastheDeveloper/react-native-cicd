@@ -43,7 +43,7 @@ export const SignUp = () => {
     setTimeout(() => {
       setLoading(false);
       navigate(CoreRoutes.GOOGLE);
-    }, 3000);
+    }, 500);
   };
 
   useEffect(() => {
