@@ -49,24 +49,31 @@ function App(): React.JSX.Element {
 
     return unsubscribe;
   }, []);
+
+  // Screen tracking for performance monitoring
+  useEffect(() => {
+    const unsubscribe = navigationRef.current?.addListener('state', () => {
+      const currentRoute = navigationRef.current?.getCurrentRoute();
+      if (currentRoute?.name) {
+        analytics().logScreenView({
+          screen_name: currentRoute.name,
+          screen_class: currentRoute.name,
+        });
+        console.log(`Screen changed to: ${currentRoute.name}`);
+      }
+    });
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, []);
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <ReduxProvider>
-        <NavigationContainer
-          ref={navigationRef}
-          onReady={onReadyNav}
-          onStateChange={async () => {
-            const previousRouteName = routeNameRef.current;
-            const currentRouteName =
-              navigationRef.current?.getCurrentRoute()?.name;
-            if (previousRouteName !== currentRouteName) {
-              await analytics().logScreenView({
-                screen_name: currentRouteName,
-                screen_class: currentRouteName,
-              });
-            }
-            routeNameRef.current = currentRouteName;
-          }}>
+        <NavigationContainer ref={navigationRef}>
           <MainNavigator />
         </NavigationContainer>
       </ReduxProvider>
