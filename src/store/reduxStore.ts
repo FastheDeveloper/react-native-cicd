@@ -3,8 +3,9 @@ import {Middleware, configureStore} from '@reduxjs/toolkit';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import rootReducer from './reducers';
 import logger from 'redux-logger';
+import activityLogger from '@utils/middleWare';
 
-const middlewares: Middleware[] = [logger];
+const middlewares: Middleware[] = [activityLogger];
 
 export const store = configureStore({
   reducer: rootReducer,

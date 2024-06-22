@@ -1,8 +1,111 @@
+FP News - React Native Application
+FP News is a React Native application that provides news listings from the Free news API on RapidAPI. It allows users to browse news articles, view details of specific articles, and sign up or log in using their Google Accounts. This repository contains the source code and setup instructions for the FP News application.
+
+Table of Contents
+Introduction
+Features
+Technologies Used
+Getting Started
+Prerequisites
+Installation
+Configuration
+Firebase Setup
+CodePush Setup
+Usage
+Testing
+Deployment
+Contributing
+License
+Introduction
+FP News is a mobile application built using React Native and designed to display news articles fetched from the Free news API on RapidAPI. It incorporates various Firebase services for analytics, crash reporting, performance monitoring, and remote configuration. The application also utilizes Redux Toolkit for state management, React Navigation for navigation between screens, and integrates with CodePush for over-the-air updates.
+
+Features
+News Listing: Displays a list of news articles with titles, images, topics, and publication dates.
+News Details: Provides detailed information about a selected news article including summary, author, etc.
+User Authentication: Allows users to sign up and log in using their Google Accounts.
+Middleware Logging: Logs user activities and screen changes using Firebase events.
+Error Handling: Handles exceptions and errors gracefully throughout the application.
+Over-the-Air Updates: Implements CodePush for seamless updates without redeployment.
+Technologies Used
+React Native
+Redux Toolkit
+React Navigation
+Firebase (Analytics, Crashlytics, Performance, Remote Config)
+CodePush
+Axios (for API requests)
+TypeScript (for type safety)
+Jest and React Native Testing Library (for unit tests)
+Getting Started
+Prerequisites
+Before starting, ensure you have the following installed:
+
+Node.js
+npm or yarn
+React Native CLI
+Firebase account and project
+Installation
+Clone the repository:
+
+bash
+Copy code
+git clone https://github.com/yourusername/lendsqr-fp-news.git
+cd lendsqr-fp-news
+Install dependencies:
+
+bash
+Copy code
+npm install
+
+# or
+
+yarn install
+Configuration
+Firebase Setup
+Create a Firebase project named lendsqr-fp-news in the Firebase console.
+Configure Firebase SDK in your React Native project:
+Add Firebase credentials in google-services.json (for Android) or GoogleService-Info.plist (for iOS).
+Initialize Firebase in your application as per Firebase documentation.
+CodePush Setup
+Set up CodePush for over-the-air updates:
+Create an account on App Center (https://appcenter.ms).
+Create a new React Native app in App Center.
+Follow the instructions to integrate CodePush in your React Native application.
+Usage
+Run the application on a connected device or emulator:
+
+bash
+Copy code
+npx react-native run-android
+
+# or
+
+npx react-native run-ios
+Testing
+Unit tests are written using Jest and React Native Testing Library. To run tests:
+
+bash
+Copy code
+npm test
+
+# or
+
+yarn test
+Deployment
+To deploy the application using Firebase App Tester:
+
+Build the React Native project for deployment.
+Deploy the built APK (for Android) or IPA (for iOS) to Firebase App Distribution.
+Contributing
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
+
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
 

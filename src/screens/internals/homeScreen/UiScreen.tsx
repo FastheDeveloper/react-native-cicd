@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {RootState} from '@store/reducers';
 import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -18,7 +18,8 @@ import {navigate} from '@utils/navigationUtils';
 import {CoreRoutes} from '@navigation/routes';
 import {Skeleton} from '@rneui/base';
 import EmptyRes from '@lib/icons/noResultIcon/emptyRes';
-
+import {aggregator} from '@core/services/newsFetcher';
+import crashlytics from '@react-native-firebase/crashlytics';
 export const HomeScreen = () => {
   const {userData} = useSelector((state: RootState) => state.user);
   const {generalNews, loading, africaNews, warNews, techNologyNews} =
@@ -54,8 +55,13 @@ export const HomeScreen = () => {
     return readableDate;
   }
   const throwError = () => {
-    throw new Error('This is a runtime error!');
+    crashlytics().crash();
+    // throw new Error('This is a runtime error!');
   };
+
+  useEffect(() => {
+    aggregator();
+  }, []);
 
   console.log(generalNews, ' GEN');
   return (
@@ -321,7 +327,7 @@ export const HomeScreen = () => {
               }}>
               <Icon name="newspaper" size={50} color={'#0F6DDC'} />
               <Text style={{marginTop: '5%'}}>
-                No News Found, Please Try Again soon
+                No News Found, Please Try Again soon!
               </Text>
             </View>
           </>

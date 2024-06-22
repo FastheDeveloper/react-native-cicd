@@ -1,11 +1,5 @@
-import {
-  Keyboard,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import React, {Fragment, useEffect, useRef, useState} from 'react';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Input from '@lib/compnents/TextInput';
 import PhoneInput from 'react-native-phone-number-input';
@@ -13,7 +7,8 @@ import {Primary, Tetiary} from '@lib/compnents/Button';
 import {navigate} from '@utils/navigationUtils';
 import {CoreRoutes} from '@navigation/routes';
 import LottieView from 'lottie-react-native';
-
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+const {height, width} = Dimensions.get('window');
 const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -48,7 +43,7 @@ export const SignUp = () => {
     setTimeout(() => {
       setLoading(false);
       navigate(CoreRoutes.GOOGLE);
-    }, 3000);
+    }, 500);
   };
 
   useEffect(() => {
@@ -61,8 +56,8 @@ export const SignUp = () => {
   }, [userData.phoneNumber]);
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <Fragment>
+    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+      <>
         {loading && (
           <View style={styles.loadingOverlay}>
             <LottieView
@@ -106,6 +101,7 @@ export const SignUp = () => {
               onChangeText={text => {
                 setUserData({...userData, phoneNumber: text});
               }}
+              placeholder="Phone Number"
               containerStyle={styles.phoneInput}
               textContainerStyle={styles.textContainer}
               textInputStyle={styles.textInput}
@@ -117,6 +113,7 @@ export const SignUp = () => {
                   );
                   setValid(checkValid ? checkValid : false);
                 },
+                placeholderTextColor: 'grey',
               }}
             />
             {!emailError && (
@@ -142,8 +139,8 @@ export const SignUp = () => {
             />
           </View>
         </View>
-      </Fragment>
-    </TouchableWithoutFeedback>
+      </>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -155,6 +152,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingVertical: '5%',
     paddingHorizontal: '5%',
+    height: height,
   },
   header: {
     justifyContent: 'center',
