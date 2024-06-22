@@ -24,7 +24,7 @@ function convertToNewsArticle(newData: NewNewsArticle): NewsArticle {
     content: `${newData.description} \n${newData.content}`,
   };
 }
-const getTopNews = async () => {
+export const getTopNews = async () => {
   setLoadingState(true);
   try {
     const api = createApiInstance({});
@@ -51,7 +51,7 @@ const getTopNews = async () => {
   }
 };
 
-const getAfricaNews = async () => {
+export const getAfricaNews = async () => {
   setLoadingState(true);
   try {
     const api = createApiInstance({});
@@ -80,7 +80,7 @@ const getAfricaNews = async () => {
   }
 };
 
-const getWarNews = async () => {
+export const getWarNews = async () => {
   setLoadingState(true);
   try {
     const api = createApiInstance({});
@@ -107,7 +107,7 @@ const getWarNews = async () => {
   }
 };
 
-const getTechNews = async () => {
+export const getTechNews = async () => {
   setLoadingState(true);
   try {
     const api = createApiInstance({});
