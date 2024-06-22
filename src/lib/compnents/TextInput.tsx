@@ -20,6 +20,7 @@ const Input = ({placeholder, onTextChange, value, keyboard, onBlur}: Props) => {
   return (
     <View style={styles.container}>
       <TextInput
+        placeholderTextColor={'grey'}
         placeholder={placeholder}
         style={styles.textInput}
         onChangeText={onTextChange}
